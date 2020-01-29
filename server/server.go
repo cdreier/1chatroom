@@ -2,11 +2,10 @@ package server
 
 import (
 	"log"
-	"net/http"
 
 	"github.com/cdreier/golang-snippets/snippets"
 	"github.com/go-chi/chi"
-	"github.com/gobuffalo/packr/v2"
+	"github.com/markbates/pkger"
 	"github.com/urfave/cli/v2"
 )
 
@@ -16,18 +15,17 @@ type server struct {
 }
 
 func Run(c *cli.Context) error {
-	h := server{
+	s := server{
 		dev:              c.Bool("dev"),
 		webpackDevServer: c.String("webpackDevServer"),
 	}
 
 	r := chi.NewRouter()
-	r.Get("/favicon.ico", http.NotFound)
 
-	distBox := packr.New("dist", "./frontend/dist")
-	snippets.ChiFileServer(r, "/dist", distBox)
+	distDir := pkger.Dir("/frontend/dist")
+	snippets.ChiFileServer(r, "/dist", distDir)
 
-	r.Get("/*", h.index)
+	r.Get("/*", s.index)
 
 	port := c.String("port")
 	log.Println("starting server on port ", port)

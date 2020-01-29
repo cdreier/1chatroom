@@ -2,15 +2,22 @@ package server
 
 import (
 	"html/template"
+	"io/ioutil"
+	"log"
 	"net/http"
 
-	"github.com/gobuffalo/packr/v2"
+	"github.com/markbates/pkger"
 )
 
 func (s server) index(w http.ResponseWriter, r *http.Request) {
-	b := packr.New("www", "./www")
-	tmplString, _ := b.FindString("index.html")
-	t, _ := template.New("index").Parse(tmplString)
+	tmpl, err := pkger.Open("/www/index.html")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	tmplString, _ := ioutil.ReadAll(tmpl)
+	t, _ := template.New("index").Parse(string(tmplString))
 
 	data := map[string]string{
 		"server": "/",
