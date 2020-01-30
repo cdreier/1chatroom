@@ -25,7 +25,11 @@ func Run(c *cli.Context) error {
 	distDir := pkger.Dir("/frontend/dist")
 	snippets.ChiFileServer(r, "/dist", distDir)
 
-	r.Get("/*", s.index)
+	r.Get("/*", s.webappHandler)
+
+	r.Route("/api", func(apiRouter chi.Router) {
+		apiRouter.HandleFunc("/ws", s.realtimeHandler)
+	})
 
 	port := c.String("port")
 	log.Println("starting server on port ", port)
