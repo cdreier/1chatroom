@@ -1,18 +1,23 @@
 import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Chatroom from './Chatroom'
+import AdminPanel from './AdminPanel'
+import styled from 'styled-components'
 
-interface IProps {}
+const Container = styled.div`
+  width: 900px;
+  margin: 0 auto;
+`
 
-class App extends React.Component<IProps> {
-
-  render() {
-    return (
-      <Router>
+const App: React.FC = () => {
+  return (
+    <Container>
+      <Router >
         <Route path="/" exact component={Chatroom} />
-      </Router>
-    )
-  }
+        <Route path="/admin" exact component={AdminPanel} />
+      </Router >
+    </Container>
+  )
 }
 
 export default App

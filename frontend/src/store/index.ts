@@ -1,8 +1,8 @@
 import React from 'react'
-import DemoModel from './DemoModel'
+import AdminModel from './AdminModel'
 
-const DemoStore = React.createContext(new DemoModel())
+const AdminStore = React.createContext(new AdminModel())
 
 export {
-  DemoStore,
+  AdminStore,
 }
