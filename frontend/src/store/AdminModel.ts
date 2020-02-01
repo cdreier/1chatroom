@@ -21,9 +21,15 @@ class AdminModel {
   @action
   createUser(userName: string) {
     // fetch
-    const u = new User()
-    u.name = userName
-    this.users.push(u)
+    fetch('/admin/users', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: userName,
+      }),
+    }).then(r => r.json())
+      .then(u => {
+        this.users.push(u)
+      })
   }
 }
 
