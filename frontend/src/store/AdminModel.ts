@@ -11,7 +11,7 @@ class AdminModel {
 
   @action
   fetchUsers() {
-    fetch('/admin/users')
+    fetch('/api/admin/users')
       .then(r => r.json())
       .then(data => {
         this.users = data
@@ -21,7 +21,7 @@ class AdminModel {
   @action
   createUser(userName: string) {
     // fetch
-    fetch('/admin/users', {
+    fetch('/api/admin/users', {
       method: 'POST',
       body: JSON.stringify({
         name: userName,
