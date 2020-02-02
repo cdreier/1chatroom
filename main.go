@@ -37,6 +37,17 @@ func main() {
 				Value:   "3000",
 				Usage:   "`PORT` to start the server on",
 			},
+			&cli.StringFlag{
+				Name:    "adminToken",
+				EnvVars: []string{"ADMIN_TOKEN"},
+				Value:   "asdf",
+				Usage:   "the admin token to log in to the admin panel",
+			},
+			&cli.BoolFlag{
+				Name:    "adminEnabled",
+				EnvVars: []string{"ADMIN_ENABLED"},
+				Usage:   "if set to false, the admin panel is disabled",
+			},
 		},
 	}
 

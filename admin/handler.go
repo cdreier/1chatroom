@@ -10,6 +10,14 @@ import (
 
 func (a *Admin) ListUser(w http.ResponseWriter, r *http.Request) {
 
+	users, err := a.db.GetAllUsers(r.Context())
+	if err != nil {
+		http.Error(w, "error while fetching users", http.StatusInternalServerError)
+		return
+	}
+
+	json.NewEncoder(w).Encode(users)
+
 }
 
 func (a *Admin) AddUser(w http.ResponseWriter, r *http.Request) {

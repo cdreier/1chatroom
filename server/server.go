@@ -17,12 +17,18 @@ type server struct {
 }
 
 func Run(c *cli.Context) error {
+
+	snippets.EnsureDir("./data")
+
 	s := server{
 		dev:              c.Bool("dev"),
 		webpackDevServer: c.String("webpackDevServer"),
 	}
 
-	adm := admin.Admin{}
+	adm := admin.NewAdmin(admin.AdminConfig{
+		Enabled: true,
+		Token:   "asdf",
+	}, nil)
 
 	r := chi.NewRouter()
 
@@ -33,6 +39,7 @@ func Run(c *cli.Context) error {
 	r.Route("/api", func(apiRouter chi.Router) {
 		apiRouter.HandleFunc("/ws", s.realtimeHandler)
 		apiRouter.Route("/admin", func(adminRouter chi.Router) {
+			adminRouter.Use(adm.CreateAdminTokenMiddleware())
 			adminRouter.Get("/users", adm.ListUser)
 			adminRouter.Post("/users", adm.AddUser)
 			adminRouter.Delete("/users/{id}", adm.RmUser)
