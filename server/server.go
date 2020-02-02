@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/cdreier/chatroom/admin"
+	"github.com/cdreier/chatroom/storage"
 
 	"github.com/cdreier/golang-snippets/snippets"
 	"github.com/go-chi/chi"
@@ -18,17 +19,18 @@ type server struct {
 
 func Run(c *cli.Context) error {
 
-	snippets.EnsureDir("./data")
-
 	s := server{
 		dev:              c.Bool("dev"),
 		webpackDevServer: c.String("webpackDevServer"),
 	}
 
+	db := storage.NewDB()
+	defer db.Close()
+
 	adm := admin.NewAdmin(admin.AdminConfig{
 		Enabled: true,
 		Token:   "asdf",
-	}, nil)
+	}, db)
 
 	r := chi.NewRouter()
 
