@@ -1,15 +1,34 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
+import { observer } from 'mobx-react-lite'
 import { AdminStore } from './store'
+import Login from './components/Login'
+import { Table, TableRow, TableCol, TableHead } from './components/Table'
 
 const AdminPanel: React.FC = () => {
 
   const store = useContext(AdminStore)
+  useEffect(() => {
+    if (store.tokenSubmitted) {
+      store.fetchUsers()
+    }
+  },        [store.tokenSubmitted])
 
   const [name, setName] = useState('')
 
   const saveUser = () => {
     store.createUser(name)
     setName('')
+  }
+
+  const onLogin = (token: string) => {
+    store.tokenSubmitted = true
+    store.token = token
+  }
+
+  if (!store.tokenSubmitted) {
+    return (
+      <Login onLogin={token => onLogin(token)} />
+    )
   }
 
   return (
@@ -19,18 +38,23 @@ const AdminPanel: React.FC = () => {
         <button onClick={() => saveUser()}>save</button>
       </div>
       <div>
-        <ul>
+        <Table>
+          <TableHead>
+            <span>Name</span>
+            <span>URL</span>
+          </TableHead>
           {store.users.map(u => {
             return (
-              <li>
-                {u.name}
-              </li>
+              <TableRow>
+                <TableCol>{u.name}</TableCol>
+                <TableCol>{u.id}</TableCol>
+              </TableRow>
             )
           })}
-        </ul>
+        </Table>
       </div>
     </>
   )
 }
 
-export default AdminPanel
+export default observer(AdminPanel)

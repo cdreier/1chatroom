@@ -3,6 +3,8 @@ package admin
 import (
 	"context"
 	"net/http"
+
+	"github.com/cdreier/chatroom/storage"
 )
 
 type Admin struct {
@@ -22,11 +24,9 @@ type AdminConfig struct {
 	Enabled bool
 }
 
-type User struct{}
-
 type AdminPersistence interface {
-	GetAllUsers(ctx context.Context) ([]User, error)
-	StoreUser(ctx context.Context, u User) error
+	GetAllUsers(ctx context.Context) ([]storage.User, error)
+	StoreUser(ctx context.Context, u storage.User) error
 	DeleteUser(ctx context.Context, userID string) error
 }
 

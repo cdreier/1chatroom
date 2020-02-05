@@ -2,16 +2,22 @@ import { observable, action } from 'mobx'
 
 class User {
   name: string
-  hash: string
+  id: string
 }
 
 class AdminModel {
 
   @observable users: User[] = []
+  @observable token: string = ''
+  @observable tokenSubmitted: boolean = false
 
   @action
   fetchUsers() {
-    fetch('/api/admin/users')
+    fetch('/api/admin/users', {
+      headers: {
+        Authorization: this.token,
+      },
+    })
       .then(r => r.json())
       .then(data => {
         this.users = data
@@ -23,6 +29,9 @@ class AdminModel {
     // fetch
     fetch('/api/admin/users', {
       method: 'POST',
+      headers: {
+        Authorization: this.token,
+      },
       body: JSON.stringify({
         name: userName,
       }),

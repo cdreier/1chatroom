@@ -7,6 +7,9 @@ import styled from 'styled-components'
 const Container = styled.div`
   width: 900px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0 12px;
 `
 
 const App: React.FC = () => {

@@ -3,7 +3,6 @@ package storage
 import (
 	"context"
 
-	"github.com/cdreier/chatroom/admin"
 	"github.com/cdreier/golang-snippets/snippets"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
@@ -22,6 +21,8 @@ func NewDB() *DB {
 
 	db := new(DB)
 	db.conn = conn
+	db.conn.AutoMigrate(&User{})
+
 	return db
 }
 
@@ -29,14 +30,20 @@ func (d *DB) Close() {
 	defer d.conn.Close()
 }
 
-func (d *DB) GetAllUsers(ctx context.Context) ([]admin.User, error) {
-	return nil, nil
+func (d *DB) GetAllUsers(ctx context.Context) ([]User, error) {
+	users := make([]User, 0)
+	d.conn.Find(&users)
+	return users, nil
 }
 
-func (d *DB) StoreUser(ctx context.Context, u admin.User) error {
+func (d *DB) StoreUser(ctx context.Context, u User) error {
+	d.conn.Create(&u)
 	return nil
 }
 
 func (d *DB) DeleteUser(ctx context.Context, userID string) error {
+	d.conn.Delete(&User{
+		ID: userID,
+	})
 	return nil
 }
