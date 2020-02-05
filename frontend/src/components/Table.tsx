@@ -21,7 +21,6 @@ const TableRow = styled.div<TableRowProps>`
   :hover{
     background-color: #f2f2f2;
   }
-  cursor: pointer;
 `
 
 const TableCol = styled.div`

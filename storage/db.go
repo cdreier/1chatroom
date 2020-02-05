@@ -47,3 +47,13 @@ func (d *DB) DeleteUser(ctx context.Context, userID string) error {
 	})
 	return nil
 }
+
+func (d *DB) GetMessages(ctx context.Context, count int) ([]Message, error) {
+	return nil, nil
+}
+
+func (d *DB) VerifyUserID(ctx context.Context, userID string) bool {
+	u := User{}
+	d.conn.Where("ID = ?", userID).First(&u)
+	return u.ID == userID
+}

@@ -11,3 +11,11 @@ type User struct {
 	UpdatedAt time.Time  `json:"updated_at,omitempty"`
 	DeletedAt *time.Time `sql:"index" json:"deleted_at,omitempty"`
 }
+
+type Message struct {
+	Author    string
+	Text      string
+	CreatedAt time.Time  `json:"created_at,omitempty"`
+	UpdatedAt time.Time  `json:"updated_at,omitempty"`
+	DeletedAt *time.Time `sql:"index" json:"deleted_at,omitempty"`
+}

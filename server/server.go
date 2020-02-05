@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/cdreier/chatroom/admin"
+	"github.com/cdreier/chatroom/chat"
 	"github.com/cdreier/chatroom/storage"
 
 	"github.com/cdreier/golang-snippets/snippets"
@@ -19,18 +20,20 @@ type server struct {
 
 func Run(c *cli.Context) error {
 
+	db := storage.NewDB()
+	defer db.Close()
+
 	s := server{
 		dev:              c.Bool("dev"),
 		webpackDevServer: c.String("webpackDevServer"),
 	}
 
-	db := storage.NewDB()
-	defer db.Close()
-
 	adm := admin.NewAdmin(admin.AdminConfig{
 		Enabled: true,
 		Token:   "asdf",
 	}, db)
+
+	chat := chat.NewChatroom(db)
 
 	r := chi.NewRouter()
 
@@ -39,7 +42,10 @@ func Run(c *cli.Context) error {
 
 	r.Get("/*", s.webappHandler)
 	r.Route("/api", func(apiRouter chi.Router) {
-		apiRouter.HandleFunc("/ws", s.realtimeHandler)
+
+		apiRouter.With(chat.UserAuthMiddleware).HandleFunc("/ws", chat.RealtimeHandler)
+		apiRouter.With(chat.UserAuthMiddleware).Get("/messages", chat.ListMessages)
+
 		apiRouter.Route("/admin", func(adminRouter chi.Router) {
 			adminRouter.Use(adm.CreateAdminTokenMiddleware())
 			adminRouter.Get("/users", adm.ListUser)
