@@ -39,10 +39,12 @@ func (a *Admin) AddUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	a.db.StoreUser(r.Context(), storage.User{
+	u := storage.User{
 		Name: b.Name,
 		ID:   id.String(),
-	})
+	}
+	a.db.StoreUser(r.Context(), u)
+	json.NewEncoder(w).Encode(u)
 
 }
 

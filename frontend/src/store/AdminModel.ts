@@ -37,6 +37,7 @@ class AdminModel {
       }),
     }).then(r => r.json())
       .then(u => {
+        console.log(u)
         this.users.push(u)
       })
   }

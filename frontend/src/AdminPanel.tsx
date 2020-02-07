@@ -45,7 +45,7 @@ const AdminPanel: React.FC = () => {
           </TableHead>
           {store.users.map(u => {
             return (
-              <TableRow>
+              <TableRow key={u.id}>
                 <TableCol>{u.name}</TableCol>
                 <TableCol>{u.id}</TableCol>
               </TableRow>

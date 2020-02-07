@@ -8,17 +8,12 @@ const Table = styled.div`
   display:table;
 `
 
-interface TableRowProps {
-  active?: boolean
-}
-
-const TableRow = styled.div<TableRowProps>`
+const TableRow = styled.div`
   display:table-row;
   color: #484848;
   text-decoration: none;
   margin-top: 3px;
-  ${props => props.active ? 'background-color: #f2f2f2;' : ''}
-  :hover{
+  &:nth-child(even){
     background-color: #f2f2f2;
   }
 `
@@ -29,14 +24,6 @@ const TableCol = styled.div`
   max-width: 300px;
   word-wrap: break-word;
   padding: 12px 0px;
-  border-top: 1px solid #eaeaea;
-  border-bottom: 1px solid #eaeaea;
-  :first-child {
-    border-left: 1px solid #eaeaea;
-  }
-  :last-child {
-    border-right: 1px solid #eaeaea;
-  }
 `
 
 const TableHead = styled.div`
