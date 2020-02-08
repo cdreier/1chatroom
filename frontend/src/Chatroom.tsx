@@ -25,8 +25,15 @@ const Chatroom: React.FC = () => {
   const store = useContext(ChatStore)
 
   useEffect(() => {
+    store.connect(id)
     store.loadMessages(id)
   },        [id])
+
+  const sendMsg = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    console.log('SUBMIT')
+  }
 
   return (
     <Container>
@@ -34,7 +41,9 @@ const Chatroom: React.FC = () => {
         <p>Chatroom</p>
       </MessageContainer>
       <InputContainer>
-  <input />
+        <form onSubmit={(e) => sendMsg(e)}>
+          <input />
+        </form>
       </InputContainer>
     </Container>
   )

@@ -36,6 +36,12 @@ func (d *DB) GetAllUsers(ctx context.Context) ([]User, error) {
 	return users, nil
 }
 
+func (d *DB) GetUser(ctx context.Context, userID string) (User, error) {
+	u := User{}
+	d.conn.Where("ID = ?", userID).First(&u)
+	return u, nil
+}
+
 func (d *DB) StoreUser(ctx context.Context, u User) error {
 	d.conn.Create(&u)
 	return nil
@@ -53,6 +59,9 @@ func (d *DB) GetMessages(ctx context.Context, count int) ([]Message, error) {
 }
 
 func (d *DB) VerifyUserID(ctx context.Context, userID string) bool {
+	if userID == "" {
+		return false
+	}
 	u := User{}
 	d.conn.Where("ID = ?", userID).First(&u)
 	return u.ID == userID

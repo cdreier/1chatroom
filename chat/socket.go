@@ -13,12 +13,19 @@ var upgrader = websocket.Upgrader{
 }
 
 func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
+
+	userID := getUserIDFrom(r.Context())
+	user, _ := c.db.GetUser(r.Context(), userID)
+
 	connection, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Print("could not start dev-websocket:", err)
+		log.Print("could not start websocket:", err)
 		return
 	}
 	defer connection.Close()
+
+	log.Println("connected", userID, user.Name)
+	c.users[userID] = user
 
 	for {
 		// mt, message, err := connection.ReadMessage()
