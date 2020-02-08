@@ -33,10 +33,10 @@ class ChatModel {
     }
   }
 
-  loadMessages(id: string) {
+  loadMessages() {
     fetch('/api/messages', {
       headers: {
-        Authorization: id,
+        Authorization: this.id,
       },
     })
       .then(r => r.json())

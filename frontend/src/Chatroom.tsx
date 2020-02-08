@@ -26,7 +26,6 @@ const Chatroom: React.FC = () => {
 
   useEffect(() => {
     store.connect(id)
-    store.loadMessages(id)
   },        [id])
 
   const sendMsg = (e: React.FormEvent<HTMLFormElement>) => {
