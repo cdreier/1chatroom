@@ -3,12 +3,19 @@ package chat
 import (
 	"context"
 
+	"github.com/gorilla/websocket"
+
 	"github.com/cdreier/chatroom/storage"
 )
 
 type Chat struct {
 	db    ChatPersistence
-	users map[string]storage.User
+	users map[string]ChatUser
+}
+
+type ChatUser struct {
+	storage.User
+	conn *websocket.Conn
 }
 
 type ChatPersistence interface {
@@ -20,6 +27,6 @@ type ChatPersistence interface {
 func NewChatroom(db ChatPersistence) *Chat {
 	c := new(Chat)
 	c.db = db
-	c.users = make(map[string]storage.User)
+	c.users = make(map[string]ChatUser)
 	return c
 }

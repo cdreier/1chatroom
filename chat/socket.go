@@ -25,12 +25,19 @@ func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
 	defer connection.Close()
 
 	log.Println("connected", userID, user.Name)
-	c.users[userID] = user
+	c.users[userID] = ChatUser{
+		User: user,
+		conn: connection,
+	}
 
 	for {
-		// mt, message, err := connection.ReadMessage()
-		_, message, err := connection.ReadMessage()
+		mt, message, err := connection.ReadMessage()
+		// _, message, err := connection.ReadMessage()
 		if err != nil {
+			log.Println("err: ", message, mt, err)
+			if websocket.IsCloseError(err, websocket.CloseGoingAway) {
+				log.Println("DC")
+			}
 			break
 		}
 		log.Printf("recv: %s", message)
