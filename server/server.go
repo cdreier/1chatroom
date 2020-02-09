@@ -44,7 +44,6 @@ func Run(c *cli.Context) error {
 	r.Route("/api", func(apiRouter chi.Router) {
 
 		apiRouter.With(chat.UserAuthMiddleware).HandleFunc("/ws", chat.RealtimeHandler)
-		apiRouter.With(chat.UserAuthMiddleware).Get("/messages", chat.ListMessages)
 
 		apiRouter.Route("/admin", func(adminRouter chi.Router) {
 			adminRouter.Use(adm.CreateAdminTokenMiddleware())

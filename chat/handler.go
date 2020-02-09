@@ -5,10 +5,6 @@ import (
 	"net/http"
 )
 
-func (c *Chat) ListMessages(w http.ResponseWriter, r *http.Request) {
-
-}
-
 type contextKey int
 
 const userContextKey contextKey = iota
