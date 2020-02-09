@@ -1,8 +1,10 @@
 package chat
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/websocket"
 )
@@ -10,6 +12,10 @@ import (
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
+}
+
+type incommingMessage struct {
+	Text string
 }
 
 func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
@@ -25,26 +31,40 @@ func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
 	defer connection.Close()
 
 	log.Println("connected", userID, user.Name)
-	c.users[userID] = ChatUser{
+	c.users[userID] = &chatUser{
 		User: user,
 		conn: connection,
 	}
 
+	// send to new user: 10 last messages?
+	// broadcast to all, current user state
+	c.broadcastUserStatus(r.Context())
+
 	for {
-		mt, message, err := connection.ReadMessage()
-		// _, message, err := connection.ReadMessage()
+		_, message, err := connection.ReadMessage()
 		if err != nil {
-			log.Println("err: ", message, mt, err)
+			// log.Println("err: ", userID, message, mt, err)
 			if websocket.IsCloseError(err, websocket.CloseGoingAway) {
-				log.Println("DC")
+				log.Println("DC", userID)
+				delete(c.users, userID)
+				// broadcast to all, user left
+				c.broadcastUserStatus(r.Context())
 			}
 			break
 		}
-		log.Printf("recv: %s", message)
-		// err = connection.WriteMessage(mt, message)
-		// if err != nil {
-		// 	log.Println("write:", err)
-		// 	break
-		// }
+		log.Printf("recv: %s", userID, message)
+
+		text := incommingMessage{}
+		err = json.Unmarshal(message, &text)
+		if err != nil {
+			log.Println("error while parsing incomming message", err)
+			continue
+		}
+		c.broadcastMessage(r.Context(), broadcastMessage{
+			Author: user.Name,
+			Text:   text.Text,
+			Date:   time.Now(),
+		})
+
 	}
 }
