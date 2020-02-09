@@ -5,12 +5,25 @@ import styled from 'styled-components'
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   height: 100%;
 `
 
 const MessageContainer = styled.div`
   flex: 1;
+`
+
+const UserList = styled.div`
+  height: 100%;
+  width: 200px;
+  border-right: 1px solid #f2f2f2;
+`
+
+const ChatContainer = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
 `
 
 const InputContainer = styled.div`
@@ -36,14 +49,23 @@ const Chatroom: React.FC = () => {
 
   return (
     <Container>
-      <MessageContainer>
-        <p>Chatroom</p>
-      </MessageContainer>
-      <InputContainer>
-        <form onSubmit={(e) => sendMsg(e)}>
-          <input />
-        </form>
-      </InputContainer>
+      <UserList>
+        {store.users.map(u => {
+          return (
+            <p>{u.name}</p>
+          )
+        })}
+      </UserList>
+      <ChatContainer>
+        <MessageContainer>
+          <p>Chatroom</p>
+        </MessageContainer>
+        <InputContainer>
+          <form onSubmit={(e) => sendMsg(e)}>
+            <input />
+          </form>
+        </InputContainer>
+      </ChatContainer>
     </Container>
   )
 }
