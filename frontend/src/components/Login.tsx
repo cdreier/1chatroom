@@ -14,8 +14,10 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
   return (
     <div>
-      <input value={token} onChange={e => setToken(e.target.value)} />
-      <button onClick={() => submit()}>login</button>
+      <form onSubmit={() => submit()}>
+        <input value={token} onChange={e => setToken(e.target.value)} />
+        <button >login</button>
+      </form>
     </div>
   )
 }

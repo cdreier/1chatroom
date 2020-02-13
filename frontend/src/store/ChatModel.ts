@@ -9,8 +9,14 @@ class MessageModel {
 
 class UserModel {
   name: string = ''
-  id: string = ''
   online: boolean = false
+
+  static fromJSON(json: UserModel): UserModel {
+    const u = new UserModel()
+    u.name = json.name
+    u.online = json.online
+    return u
+  }
 }
 
 enum MESSAGETYPES {
@@ -41,7 +47,7 @@ class ChatModel {
       console.log(data.type, MESSAGETYPES.USERSTATUS.toString())
       switch (data.type) {
         case MESSAGETYPES.USERSTATUS.toString():
-          this.users = data.users
+          this.users = data.users.map((u: UserModel) => UserModel.fromJSON(u))
           break
       }
       console.log('RESPONSE: ', data)
@@ -49,6 +55,13 @@ class ChatModel {
     this.socket.onerror = (evt) => {
       console.log('ERROR: ', evt)
     }
+  }
+
+  sendMessage(msg: string) {
+    this.socket.send(JSON.stringify({
+      msg,
+      type: MESSAGETYPES.MESSAGE,
+    }))
   }
 
 }

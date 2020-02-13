@@ -10,7 +10,6 @@ type userStatusMessage struct {
 }
 
 type userStatusUserMessage struct {
-	ID     string `json:"id"`
 	Name   string `json:"name"`
 	Online bool   `json:"online"`
 }
@@ -25,7 +24,6 @@ func (c *Chat) broadcastUserStatus(ctx context.Context) {
 	for _, u := range users {
 		_, isOnline := c.users[u.ID]
 		msg.Users = append(msg.Users, userStatusUserMessage{
-			ID:     u.ID,
 			Name:   u.Name,
 			Online: isOnline,
 		})

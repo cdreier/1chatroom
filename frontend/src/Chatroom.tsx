@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { ChatStore } from './store/index'
 import styled from 'styled-components'
+import { observer } from 'mobx-react-lite'
+import ChatInput from './components/ChatInput'
 
 const Container = styled.div`
   display: flex;
@@ -26,12 +28,6 @@ const ChatContainer = styled.div`
   height: 100%;
 `
 
-const InputContainer = styled.div`
-  background-color: palegreen;
-  padding: 12px;
-  width: 100%;
-`
-
 const Chatroom: React.FC = () => {
 
   const { id } = useParams()
@@ -41,10 +37,8 @@ const Chatroom: React.FC = () => {
     store.connect(id)
   },        [id])
 
-  const sendMsg = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    console.log('SUBMIT')
+  const sendMsg = (msg: string) => {
+    store.sendMessage(msg)
   }
 
   return (
@@ -52,7 +46,7 @@ const Chatroom: React.FC = () => {
       <UserList>
         {store.users.map(u => {
           return (
-            <p>{u.name}</p>
+            <p key={u.name}>{u.name}</p>
           )
         })}
       </UserList>
@@ -60,14 +54,10 @@ const Chatroom: React.FC = () => {
         <MessageContainer>
           <p>Chatroom</p>
         </MessageContainer>
-        <InputContainer>
-          <form onSubmit={(e) => sendMsg(e)}>
-            <input />
-          </form>
-        </InputContainer>
+        <ChatInput onSubmit={msg => sendMsg(msg)} />
       </ChatContainer>
     </Container>
   )
 }
 
-export default Chatroom
+export default observer(Chatroom)
