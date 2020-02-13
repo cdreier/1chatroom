@@ -7,9 +7,9 @@ FROM alpine
 # packr build -o server-binary
 
 RUN mkdir /app
-ADD server-binary /app
+ADD main /app
 WORKDIR /app
 
-EXPOSE 8080
+EXPOSE 3000
 
-CMD [ "./server-binary" ]
+CMD [ "./main" ]
