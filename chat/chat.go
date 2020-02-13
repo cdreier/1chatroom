@@ -32,6 +32,7 @@ type ChatPersistence interface {
 	GetUser(ctx context.Context, userID string) (storage.User, error)
 	GetAllUsers(ctx context.Context) ([]storage.User, error)
 	VerifyUserID(ctx context.Context, userID string) bool
+	StoreMessage(ctx context.Context, msg storage.Message) error
 }
 
 func NewChatroom(db ChatPersistence) *Chat {

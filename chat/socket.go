@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/cdreier/chatroom/storage"
+
 	"github.com/gorilla/websocket"
 )
 
@@ -52,7 +54,7 @@ func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			break
 		}
-		log.Printf("recv: %s", userID, message)
+		// log.Printf("recv: %s", userID, message)
 
 		text := incommingMessage{}
 		err = json.Unmarshal(message, &text)
@@ -60,10 +62,16 @@ func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
 			log.Println("error while parsing incomming message", err)
 			continue
 		}
+
 		c.broadcastMessage(r.Context(), broadcastMessage{
 			Author: user.Name,
 			Text:   text.Text,
 			Date:   time.Now(),
+		})
+
+		c.db.StoreMessage(r.Context(), storage.Message{
+			Author: user.Name,
+			Text:   text.Text,
 		})
 
 	}

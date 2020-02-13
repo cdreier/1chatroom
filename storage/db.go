@@ -22,6 +22,7 @@ func NewDB() *DB {
 	db := new(DB)
 	db.conn = conn
 	db.conn.AutoMigrate(&User{})
+	db.conn.AutoMigrate(&Message{})
 
 	return db
 }
@@ -65,4 +66,9 @@ func (d *DB) VerifyUserID(ctx context.Context, userID string) bool {
 	u := User{}
 	d.conn.Where("ID = ?", userID).First(&u)
 	return u.ID == userID
+}
+
+func (d *DB) StoreMessage(ctx context.Context, msg Message) error {
+	d.conn.Save(msg)
+	return nil
 }
