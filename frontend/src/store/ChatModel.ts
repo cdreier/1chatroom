@@ -1,9 +1,19 @@
-import { observable } from 'mobx'
+import { observable, computed } from 'mobx'
 
 class MessageModel {
   author: string = ''
   text: string = ''
   time: Date = new Date()
+
+  constructor(author: string, msg: string) {
+    this.author = author
+    this.text = msg
+  }
+
+  @computed
+  get hash(): string {
+    return btoa(this.author + this.text + this.time.toString())
+  }
 
 }
 
@@ -44,10 +54,12 @@ class ChatModel {
     }
     this.socket.onmessage = (evt) => {
       const data = JSON.parse(evt.data)
-      console.log(data.type, MESSAGETYPES.USERSTATUS.toString())
       switch (data.type) {
         case MESSAGETYPES.USERSTATUS.toString():
           this.users = data.users.map((u: UserModel) => UserModel.fromJSON(u))
+          break
+        case MESSAGETYPES.MESSAGE.toString():
+          this.messages.push(new MessageModel(data.author, data.text))
           break
       }
       console.log('RESPONSE: ', data)
@@ -59,7 +71,7 @@ class ChatModel {
 
   sendMessage(msg: string) {
     this.socket.send(JSON.stringify({
-      msg,
+      text: msg,
       type: MESSAGETYPES.MESSAGE,
     }))
   }

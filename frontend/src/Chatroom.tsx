@@ -4,6 +4,7 @@ import { ChatStore } from './store/index'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import ChatInput from './components/ChatInput'
+import ChatMessage from './components/ChatMessage'
 
 const Container = styled.div`
   display: flex;
@@ -46,13 +47,17 @@ const Chatroom: React.FC = () => {
       <UserList>
         {store.users.map(u => {
           return (
-            <p key={u.name}>{u.name}</p>
+            <p key={u.name}>{u.name} {u.online ?  '*' : ''}</p>
           )
         })}
       </UserList>
       <ChatContainer>
         <MessageContainer>
-          <p>Chatroom</p>
+          {store.messages.map(m => {
+            return (
+              <ChatMessage key={m.hash} author={m.author}>{m.text}</ChatMessage>
+            )
+          })}
         </MessageContainer>
         <ChatInput onSubmit={msg => sendMsg(msg)} />
       </ChatContainer>
