@@ -12,6 +12,8 @@ const InputContainer = styled.div`
 
 const Input = styled.input`
   flex: 1;
+  padding: 6px;
+  outline: none;
 `
 
 interface ChatInputProps {
