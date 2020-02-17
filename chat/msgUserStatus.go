@@ -7,6 +7,7 @@ import (
 type userStatusMessage struct {
 	socketMessage
 	Users []userStatusUserMessage `json:"users"`
+	Self  string
 }
 
 type userStatusUserMessage struct {
@@ -21,12 +22,17 @@ func (c *Chat) broadcastUserStatus(ctx context.Context) {
 	msg.Users = make([]userStatusUserMessage, 0)
 	msg.Type = msgTypeUserStatus
 
+	ownUserID := getUserIDFrom(ctx)
+
 	for _, u := range users {
 		_, isOnline := c.users[u.ID]
 		msg.Users = append(msg.Users, userStatusUserMessage{
 			Name:   u.Name,
 			Online: isOnline,
 		})
+		if u.ID == ownUserID {
+			msg.Self = u.Name
+		}
 	}
 
 	for _, u := range c.users {
