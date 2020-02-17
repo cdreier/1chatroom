@@ -6,8 +6,8 @@ import (
 
 type userStatusMessage struct {
 	socketMessage
-	Users []userStatusUserMessage `json:"users"`
-	Self  string
+	Users []userStatusUserMessage `json:"users,omitempty"`
+	Self  string                  `json:"self,omitempty"`
 }
 
 type userStatusUserMessage struct {
