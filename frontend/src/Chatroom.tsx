@@ -14,6 +14,16 @@ const Container = styled.div`
 
 const MessageContainer = styled.div`
   flex: 1;
+  padding: 0 12px;
+  overflow: auto;
+  margin-bottom: 6px;
+`
+
+const Scrollable = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
 `
 
 const UserList = styled.div`
@@ -53,11 +63,13 @@ const Chatroom: React.FC = () => {
       </UserList>
       <ChatContainer>
         <MessageContainer>
+          <Scrollable>
           {store.messages.map(m => {
             return (
-              <ChatMessage key={m.hash} author={m.author}>{m.text}</ChatMessage>
+              <ChatMessage key={m.hash} author={m.author} self={store.self}>{m.text}</ChatMessage>
             )
           })}
+          </Scrollable>
         </MessageContainer>
         <ChatInput onSubmit={msg => sendMsg(msg)} />
       </ChatContainer>

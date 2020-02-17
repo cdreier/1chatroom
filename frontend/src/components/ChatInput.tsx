@@ -4,7 +4,6 @@ import styled from 'styled-components'
 const InputContainer = styled.div`
   background-color: palegreen;
   padding: 12px;
-  width: 100%;
   >form{
     display: flex;
   }

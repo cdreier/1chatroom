@@ -37,7 +37,7 @@ enum MESSAGETYPES {
 class ChatModel {
 
   @observable id: string = ''
-  @observable name: string = ''
+  @observable self: string = ''
   @observable messages: MessageModel[] = []
   @observable users: UserModel[] = []
 
@@ -57,6 +57,7 @@ class ChatModel {
       switch (data.type) {
         case MESSAGETYPES.USERSTATUS.toString():
           this.users = data.users.map((u: UserModel) => UserModel.fromJSON(u))
+          this.self = data.self
           break
         case MESSAGETYPES.MESSAGE.toString():
           this.messages.push(new MessageModel(data.author, data.text))
