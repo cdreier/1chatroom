@@ -2,6 +2,8 @@ package storage
 
 import (
 	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
 type User struct {
@@ -13,9 +15,7 @@ type User struct {
 }
 
 type Message struct {
-	Author    string
-	Text      string
-	CreatedAt time.Time  `json:"created_at,omitempty"`
-	UpdatedAt time.Time  `json:"updated_at,omitempty"`
-	DeletedAt *time.Time `sql:"index" json:"deleted_at,omitempty"`
+	gorm.Model
+	Author string
+	Text   string
 }

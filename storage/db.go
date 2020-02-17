@@ -71,6 +71,6 @@ func (d *DB) VerifyUserID(ctx context.Context, userID string) bool {
 }
 
 func (d *DB) StoreMessage(ctx context.Context, msg Message) error {
-	d.conn.Save(msg)
+	d.conn.Save(&msg)
 	return nil
 }
