@@ -38,7 +38,18 @@ func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
 		conn: connection,
 	}
 
-	// send to new user: 10 last messages?
+	// send to new user the least few messages
+	history, _ := c.db.GetMessages(r.Context(), 15)
+	for _, m := range history {
+		bm := broadcastMessage{
+			Author: m.Author,
+			Text:   m.Text,
+			Date:   m.CreatedAt,
+		}
+		bm.Type = msgTypeBroadcastMessage
+		connection.WriteJSON(bm)
+	}
+
 	// broadcast to all, current user state
 	c.broadcastUserStatus(r.Context())
 

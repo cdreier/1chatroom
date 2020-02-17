@@ -56,7 +56,9 @@ func (d *DB) DeleteUser(ctx context.Context, userID string) error {
 }
 
 func (d *DB) GetMessages(ctx context.Context, count int) ([]Message, error) {
-	return nil, nil
+	var result []Message
+	d.conn.Find(&result, new(Message)).Order("CreatedAT DESC").Limit(count)
+	return result, nil
 }
 
 func (d *DB) VerifyUserID(ctx context.Context, userID string) bool {
