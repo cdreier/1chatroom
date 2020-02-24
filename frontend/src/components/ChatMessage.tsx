@@ -21,6 +21,7 @@ const ChatHead = styled.div`
   font-size: 12px;
   display: flex;
   justify-content: space-between;
+  font-family: ${props => props.theme.fonts.secondary};
 `
 
 const Author = styled.span`
@@ -31,6 +32,9 @@ const ChatTime = styled.span`
 
 const MessageBody = styled.p`
   margin: 9px 0 0;
+  font-family: ${props => props.theme.fonts.primary};
+  font-size: 21px;
+  line-height: 30px;
 `
 
 interface ChatMessageProps {

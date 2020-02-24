@@ -2,7 +2,8 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Chatroom from './Chatroom'
 import AdminPanel from './AdminPanel'
-import styled from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
+import Theme from './theme/default'
 
 const Container = styled.div`
   width: 900px;
@@ -15,14 +16,16 @@ const Container = styled.div`
 
 const App: React.FC = () => {
   return (
-    <Container>
-      <Router>
-        <Switch >
-          <Route path="/admin" exact component={AdminPanel} />
-          <Route path="/:id" exact component={Chatroom} />
-        </Switch >
-      </Router>
-    </Container>
+    <ThemeProvider theme={Theme}>
+      <Container>
+        <Router>
+          <Switch >
+            <Route path="/admin" exact component={AdminPanel} />
+            <Route path="/:id" exact component={Chatroom} />
+          </Switch >
+        </Router>
+      </Container>
+    </ThemeProvider>
   )
 }
 
