@@ -8,6 +8,7 @@ interface ContainerProps {
 const Container = styled.div<ContainerProps>`
   border: 1px solid #aeaeae;
   padding: 9px;
+  max-width: 400px;
   border-bottom-left-radius: ${props => props.ownMessage ? '6px' : '0px'};
   border-bottom-right-radius: ${props => props.ownMessage ? '0px' : '6px'};;
   border-top-left-radius: 6px;
@@ -16,8 +17,16 @@ const Container = styled.div<ContainerProps>`
   ${props => props.ownMessage ? 'align-self: flex-end;' : ''};
 `
 
-const Author = styled.span`
+const ChatHead = styled.div`
   font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+`
+
+const Author = styled.span`
+`
+const ChatTime = styled.span`
+  margin-left: 30px;
 `
 
 const MessageBody = styled.p`
@@ -26,14 +35,18 @@ const MessageBody = styled.p`
 
 interface ChatMessageProps {
   author: string
+  date: Date
   children: string
   self: string
 }
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ children, author, self }) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({ children, author, date, self }) => {
   return (
     <Container ownMessage={self === author}>
-      <Author>{author}</Author>
+      <ChatHead>
+        <Author>{author}</Author>
+        <ChatTime>{date.toLocaleDateString()} - {date.toLocaleTimeString()}</ChatTime>
+      </ChatHead>
       <MessageBody>{children}</MessageBody>
     </Container>
   )

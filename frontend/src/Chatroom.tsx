@@ -66,7 +66,7 @@ const Chatroom: React.FC = () => {
           <Scrollable>
           {store.messages.map(m => {
             return (
-              <ChatMessage key={m.hash} author={m.author} self={store.self}>{m.text}</ChatMessage>
+              <ChatMessage key={m.hash} author={m.author} date={m.time} self={store.self}>{m.text}</ChatMessage>
             )
           })}
           </Scrollable>

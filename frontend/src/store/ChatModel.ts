@@ -5,9 +5,10 @@ class MessageModel {
   text: string = ''
   time: Date = new Date()
 
-  constructor(author: string, msg: string) {
+  constructor(author: string, msg: string, time: string) {
     this.author = author
     this.text = msg
+    this.time = new Date(time)
   }
 
   @computed
@@ -45,29 +46,27 @@ class ChatModel {
 
   connect(id: string) {
     this.socket = new WebSocket(`${location.protocol.replace('http', 'ws')}//${location.host}/api/ws?Authorization=${id}`)
-    this.socket.onopen = (evt) => {
-      console.log('OPEN')
-    }
+    this.socket.onopen = (evt) => console.log('OPEN')
     this.socket.onclose = (evt) => {
       console.log('CLOSE')
       this.socket = null
     }
-    this.socket.onmessage = (evt) => {
-      const data = JSON.parse(evt.data)
-      switch (data.type) {
-        case MESSAGETYPES.USERSTATUS.toString():
-          this.users = data.users.map((u: UserModel) => UserModel.fromJSON(u))
-          this.self = data.self
-          break
-        case MESSAGETYPES.MESSAGE.toString():
-          this.messages.push(new MessageModel(data.author, data.text))
-          break
-      }
-      console.log('RESPONSE: ', data)
+    this.socket.onerror = (evt) => console.log('ERROR: ', evt)
+    this.socket.onmessage = (evt) => this.onMessage(evt)
+  }
+
+  onMessage(evt: MessageEvent) {
+    const data = JSON.parse(evt.data)
+    switch (data.type) {
+      case MESSAGETYPES.USERSTATUS.toString():
+        this.users = data.users.map((u: UserModel) => UserModel.fromJSON(u))
+        this.self = data.self
+        break
+      case MESSAGETYPES.MESSAGE.toString():
+        this.messages.push(new MessageModel(data.author, data.text, data.date))
+        break
     }
-    this.socket.onerror = (evt) => {
-      console.log('ERROR: ', evt)
-    }
+    console.log('RESPONSE: ', data)
   }
 
   sendMessage(msg: string) {
