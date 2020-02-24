@@ -6,7 +6,8 @@ interface ContainerProps {
 }
 
 const Container = styled.div<ContainerProps>`
-  border: 1px solid #aeaeae;
+  border: 1px solid ${props => props.theme.colors.black};
+  background-color: ${props => props.ownMessage ? props.theme.colors.ownMessage : props.theme.colors.otherMessage};
   padding: 9px;
   max-width: 500px;
   border-bottom-left-radius: ${props => props.ownMessage ? '6px' : '0px'};

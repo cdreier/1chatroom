@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 const InputContainer = styled.div`
-  background-color: palegreen;
+  background-color: ${props => props.theme.colors.secondary};
   padding: 12px;
   >form{
     display: flex;

@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Chatroom from './Chatroom'
 import AdminPanel from './AdminPanel'
-import styled, { ThemeProvider } from 'styled-components'
+import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
 import Theme from './theme/default'
 
 const Container = styled.div`
@@ -14,9 +14,16 @@ const Container = styled.div`
   padding: 0 12px;
 `
 
+const GlobalStyle = createGlobalStyle`
+  body {
+    background-color: ${props => props.theme.colors.background};
+  }
+`
+
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={Theme}>
+      <GlobalStyle />
       <Container>
         <Router>
           <Switch >

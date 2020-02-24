@@ -29,7 +29,7 @@ const Scrollable = styled.div`
 const UserList = styled.div`
   height: 100%;
   width: 200px;
-  border-right: 1px solid #f2f2f2;
+  border-right: 1px solid ${props => props.theme.colors.secondary};
   font-size: 1em;
   font-family: ${props => props.theme.fonts.secondary};
 `
