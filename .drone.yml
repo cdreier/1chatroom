@@ -1,0 +1,43 @@
+kind: pipeline
+name: default
+
+steps:
+
+  - name: prepare
+    image: node
+    commands:
+    - cd frontend
+    - cd npm install
+
+  - name: test
+    image: drailing/go_packr_zip
+    environment:
+      GO111MODULE: on
+    commands:
+    - go test 
+    
+  - name: build
+    image: drailing/go_packr_zip
+    environment:
+      GO111MODULE: on
+    commands:
+      - packr2
+      - GOOS=linux GOARCH=amd64 go build -o ${DRONE_REPO_NAME}-${DRONE_TAG}-linux-amd64
+      - GOOS=darwin GOARCH=amd64 go build -o ${DRONE_REPO_NAME}-${DRONE_TAG}-darwin-amd64
+      - GOOS=windows GOARCH=amd64 go build -o ${DRONE_REPO_NAME}-${DRONE_TAG}-win-amd64.exe
+      - mkdir release
+      - zip release/${DRONE_REPO_NAME}-${DRONE_TAG}-linux-amd64.zip ${DRONE_REPO_NAME}-${DRONE_TAG}-linux-amd64
+      - zip release/${DRONE_REPO_NAME}-${DRONE_TAG}-darwin-amd64.zip ${DRONE_REPO_NAME}-${DRONE_TAG}-darwin-amd64
+      - zip release/${DRONE_REPO_NAME}-${DRONE_TAG}-win-amd64.zip ${DRONE_REPO_NAME}-${DRONE_TAG}-win-amd64.exe
+    when:
+      event: tag
+
+  - name: github_release
+    image: plugins/github-release
+    settings:
+      api_key:
+        from_secret: github_token
+      files: 
+        - release/*
+    when:
+      event: tag
