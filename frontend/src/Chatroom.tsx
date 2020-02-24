@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { ChatStore } from './store/index'
 import styled from 'styled-components'
@@ -48,6 +48,11 @@ const Chatroom: React.FC = () => {
     store.connect(id)
   },        [id])
 
+  const scrollRef = useRef<HTMLDivElement>()
+  useEffect(() => {
+    scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
+  },        [store.messages.length])
+
   const sendMsg = (msg: string) => {
     store.sendMessage(msg)
   }
@@ -63,7 +68,7 @@ const Chatroom: React.FC = () => {
       </UserList>
       <ChatContainer>
         <MessageContainer>
-          <Scrollable>
+          <Scrollable ref={scrollRef}>
           {store.messages.map(m => {
             return (
               <ChatMessage key={m.hash} author={m.author} date={m.time} self={store.self}>{m.text}</ChatMessage>
