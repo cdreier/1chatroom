@@ -64,6 +64,11 @@ class ChatModel {
         break
       case MESSAGETYPES.MESSAGE.toString():
         this.messages.push(new MessageModel(data.author, data.text, data.date))
+        const sortedMessages = this.messages.slice().sort((a: MessageModel, b: MessageModel) => {
+          return a.time.getTime() - b.time.getTime()
+        })
+        // @ts-ignore
+        this.messages.replace(sortedMessages)
         break
     }
     console.log('RESPONSE: ', data)
