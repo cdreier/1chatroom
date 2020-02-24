@@ -30,6 +30,8 @@ const UserList = styled.div`
   height: 100%;
   width: 200px;
   border-right: 1px solid #f2f2f2;
+  font-size: 1em;
+  font-family: ${props => props.theme.fonts.secondary};
 `
 
 const ChatContainer = styled.div`

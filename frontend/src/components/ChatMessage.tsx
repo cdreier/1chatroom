@@ -8,7 +8,7 @@ interface ContainerProps {
 const Container = styled.div<ContainerProps>`
   border: 1px solid #aeaeae;
   padding: 9px;
-  max-width: 400px;
+  max-width: 500px;
   border-bottom-left-radius: ${props => props.ownMessage ? '6px' : '0px'};
   border-bottom-right-radius: ${props => props.ownMessage ? '0px' : '6px'};;
   border-top-left-radius: 6px;
@@ -18,7 +18,7 @@ const Container = styled.div<ContainerProps>`
 `
 
 const ChatHead = styled.div`
-  font-size: 12px;
+  font-size: ${props => props.theme.fonts.normal};
   display: flex;
   justify-content: space-between;
   font-family: ${props => props.theme.fonts.secondary};
@@ -33,8 +33,8 @@ const ChatTime = styled.span`
 const MessageBody = styled.p`
   margin: 9px 0 0;
   font-family: ${props => props.theme.fonts.primary};
-  font-size: 21px;
-  line-height: 30px;
+  font-size: ${props => props.theme.fonts.big};
+  line-height: ${props => props.theme.fonts.lineHeightBig};
 `
 
 interface ChatMessageProps {
