@@ -7,7 +7,6 @@ build-local-docker:
 	APP_NAME=main-local-linux-amd64 docker build --rm -t chatroom .
 
 build-all:
-	make build-frontend
 	make build-linux
 	make build-alpine
 	make build-mac
@@ -19,11 +18,6 @@ zip-all:
 	zip release/$(BINARY_NAME)-$(VERSION)-darwin-amd64.zip $(BINARY_NAME)-$(VERSION)-darwin-amd64
 	zip release/$(BINARY_NAME)-$(VERSION)-win-amd64.zip $(BINARY_NAME)-$(VERSION)-win-amd64.exe
 	zip release/$(BINARY_NAME)-$(VERSION)-alpine.zip $(BINARY_NAME)-$(VERSION)-alpine
-
-.ONESHELL:
-build-frontend:
-	cd frontend
-	npm run build
 
 build-linux:
 	GOOS=linux GOARCH=amd64 pkger
