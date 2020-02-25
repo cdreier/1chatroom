@@ -29,8 +29,8 @@ func Run(c *cli.Context) error {
 	}
 
 	adm := admin.NewAdmin(admin.AdminConfig{
-		Enabled: true,
-		Token:   "asdf",
+		Enabled: c.Bool("adminEnabled"),
+		Token:   c.String("adminToken"),
 	}, db)
 
 	chat := chat.NewChatroom(db)

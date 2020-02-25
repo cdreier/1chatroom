@@ -45,6 +45,7 @@ func main() {
 			},
 			&cli.BoolFlag{
 				Name:    "adminEnabled",
+				Value:   true,
 				EnvVars: []string{"ADMIN_ENABLED"},
 				Usage:   "if set to false, the admin panel is disabled",
 			},

@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+	"log"
 
 	"github.com/cdreier/golang-snippets/snippets"
 	"github.com/jinzhu/gorm"
@@ -16,7 +17,7 @@ func NewDB() *DB {
 	snippets.EnsureDir("./data")
 	conn, err := gorm.Open("sqlite3", "./data/chatroom.db")
 	if err != nil {
-		panic("failed to connect database")
+		log.Fatal("failed to connect database", err.Error())
 	}
 
 	db := new(DB)
