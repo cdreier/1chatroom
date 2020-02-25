@@ -7,7 +7,7 @@ steps:
     image: node
     commands:
     - cd frontend
-    - cd npm install
+    - npm install
 
   - name: test
     image: drailing/go_packr_zip
