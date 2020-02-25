@@ -16,11 +16,13 @@ build-all:
 	rm pkged.go
 
 zip-all:
+	ls -al
 	mkdir -p release
+	ls -al
 	zip release/$(BINARY_NAME)-$(VERSION)-linux-amd64.zip $(BINARY_NAME)-$(VERSION)-linux-amd64
-	zip release/$(BINARY_NAME)-$(VERSION)-alpine.zip $(BINARY_NAME)-$(VERSION)-alpine
 	zip release/$(BINARY_NAME)-$(VERSION)-darwin-amd64.zip $(BINARY_NAME)-$(VERSION)-darwin-amd64
 	zip release/$(BINARY_NAME)-$(VERSION)-win-amd64.zip $(BINARY_NAME)-$(VERSION)-win-amd64.exe
+	zip release/$(BINARY_NAME)-$(VERSION)-alpine.zip $(BINARY_NAME)-$(VERSION)-alpine
 
 .ONESHELL:
 build-frontend:
