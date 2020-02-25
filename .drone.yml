@@ -21,14 +21,22 @@ steps:
     environment:
       GO111MODULE: on
     commands:
-      - packr2
-      - GOOS=linux GOARCH=amd64 go build -o ${DRONE_REPO_NAME}-${DRONE_TAG}-linux-amd64
-      - GOOS=darwin GOARCH=amd64 go build -o ${DRONE_REPO_NAME}-${DRONE_TAG}-darwin-amd64
-      - GOOS=windows GOARCH=amd64 go build -o ${DRONE_REPO_NAME}-${DRONE_TAG}-win-amd64.exe
-      - mkdir release
-      - zip release/${DRONE_REPO_NAME}-${DRONE_TAG}-linux-amd64.zip ${DRONE_REPO_NAME}-${DRONE_TAG}-linux-amd64
-      - zip release/${DRONE_REPO_NAME}-${DRONE_TAG}-darwin-amd64.zip ${DRONE_REPO_NAME}-${DRONE_TAG}-darwin-amd64
-      - zip release/${DRONE_REPO_NAME}-${DRONE_TAG}-win-amd64.zip ${DRONE_REPO_NAME}-${DRONE_TAG}-win-amd64.exe
+      - make build-all
+      - make zip-all
+    when:
+      event: tag
+
+  - name: dockerize
+    image: plugins/docker
+    environment:
+      CHATROOM_BIN: ${DRONE_REPO_NAME}-${DRONE_TAG}-alpine
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      repo: drailing/1chatroom
+      tags: ${DRONE_TAG}
     when:
       event: tag
 
