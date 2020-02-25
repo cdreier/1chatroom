@@ -23,8 +23,6 @@ steps:
     commands:
       - make build-all
       - make zip-all
-    when:
-      event: tag
 
   - name: dockerize
     image: plugins/docker
@@ -36,9 +34,7 @@ steps:
       password:
         from_secret: docker_password
       repo: drailing/1chatroom
-      tags: ${DRONE_TAG}
-    when:
-      event: tag
+      auto_tag: true
 
   - name: github_release
     image: plugins/github-release
