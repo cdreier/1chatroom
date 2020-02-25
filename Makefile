@@ -8,17 +8,13 @@ build-local-docker:
 
 build-all:
 	make build-frontend
-	pkger
 	make build-linux
 	make build-alpine
 	make build-mac
 	make build-win
-	rm pkged.go
 
 zip-all:
-	ls -al
 	mkdir -p release
-	ls -al
 	zip release/$(BINARY_NAME)-$(VERSION)-linux-amd64.zip $(BINARY_NAME)-$(VERSION)-linux-amd64
 	zip release/$(BINARY_NAME)-$(VERSION)-darwin-amd64.zip $(BINARY_NAME)-$(VERSION)-darwin-amd64
 	zip release/$(BINARY_NAME)-$(VERSION)-win-amd64.zip $(BINARY_NAME)-$(VERSION)-win-amd64.exe
@@ -30,16 +26,24 @@ build-frontend:
 	npm run build
 
 build-linux:
+	GOOS=linux GOARCH=amd64 pkger
 	GOOS=linux GOARCH=amd64 go build -o $(BINARY_NAME)-$(VERSION)-linux-amd64 -ldflags "$(LINKERFLAGS)"
+	rm pkged.go
 
 build-mac:
+	GOOS=darwin GOARCH=amd64 pkger
 	GOOS=darwin GOARCH=amd64 go build -o $(BINARY_NAME)-$(VERSION)-darwin-amd64 -ldflags "$(LINKERFLAGS)"
+	rm pkged.go
 
 build-win:
+	GOOS=windows GOARCH=amd64 pkger
 	GOOS=windows GOARCH=amd64 go build -o $(BINARY_NAME)-$(VERSION)-win-amd64.exe -ldflags "$(LINKERFLAGS)"
+	rm pkged.go
 
 build-alpine:
+	GOOS=linux GOARCH=amd64 pkger
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=1 go build -a -o $(BINARY_NAME)-$(VERSION)-alpine -ldflags "$(LINKERFLAGS)"
+	rm pkged.go
 
 start:
 	go run . -dev
