@@ -50,7 +50,7 @@ const AdminPanel: React.FC = () => {
             return (
               <TableRow key={u.id}>
                 <TableCol>{u.name}</TableCol>
-                <TableCol>{u.id}</TableCol>
+                <TableCol>{window.location.host}/{u.id}</TableCol>
               </TableRow>
             )
           })}
