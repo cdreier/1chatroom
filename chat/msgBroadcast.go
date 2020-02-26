@@ -14,7 +14,7 @@ type broadcastMessage struct {
 
 func (c *Chat) broadcastMessage(ctx context.Context, msg broadcastMessage) {
 
-	msg.Type = msgTypeBroadcastMessage
+	msg.Type = msgTypeMessage
 
 	for _, u := range c.users {
 		u.conn.WriteJSON(msg)

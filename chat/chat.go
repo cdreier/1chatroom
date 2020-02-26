@@ -9,8 +9,9 @@ import (
 )
 
 const (
-	msgTypeUserStatus       = "USERSTATUS"
-	msgTypeBroadcastMessage = "MESSAGE"
+	msgTypeUserStatus = "USERSTATUS"
+	msgTypeMessage    = "MESSAGE"
+	msgTypeLoadMore   = "MORE"
 )
 
 type Chat struct {

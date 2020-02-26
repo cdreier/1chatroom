@@ -18,6 +18,7 @@ var upgrader = websocket.Upgrader{
 
 type incommingMessage struct {
 	Text string
+	Type string
 }
 
 func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
@@ -46,7 +47,7 @@ func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
 			Text:   m.Text,
 			Date:   m.CreatedAt,
 		}
-		bm.Type = msgTypeBroadcastMessage
+		bm.Type = msgTypeMessage
 		connection.WriteJSON(bm)
 	}
 
@@ -65,25 +66,30 @@ func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			break
 		}
-		// log.Printf("recv: %s", userID, message)
 
-		text := incommingMessage{}
-		err = json.Unmarshal(message, &text)
+		msg := incommingMessage{}
+		err = json.Unmarshal(message, &msg)
 		if err != nil {
 			log.Println("error while parsing incomming message", err)
 			continue
 		}
 
-		c.broadcastMessage(r.Context(), broadcastMessage{
-			Author: user.Name,
-			Text:   text.Text,
-			Date:   time.Now(),
-		})
+		switch msg.Type {
+		case msgTypeMessage:
+			c.broadcastMessage(r.Context(), broadcastMessage{
+				Author: user.Name,
+				Text:   msg.Text,
+				Date:   time.Now(),
+			})
 
-		c.db.StoreMessage(r.Context(), storage.Message{
-			Author: user.Name,
-			Text:   text.Text,
-		})
+			c.db.StoreMessage(r.Context(), storage.Message{
+				Author: user.Name,
+				Text:   msg.Text,
+			})
+			break
+		case msgTypeLoadMore:
+			log.Println("LOADMORE")
+		}
 
 	}
 }
