@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { ChatStore } from './store/index'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import ChatInput from './components/ChatInput'
 import ChatMessage from './components/ChatMessage'
+import useDebounce from './hooks/useDebounce'
 
 const Container = styled.div`
   display: flex;
@@ -41,7 +42,11 @@ const ChatContainer = styled.div`
   height: 100%;
 `
 
-const LoadMore = styled.div`
+const LoadMore = styled.div``
+const ChatBottom = styled.div`
+  height: 1px;
+  width: 100%;
+  border-color: red;
 `
 
 const Chatroom: React.FC = () => {
@@ -49,8 +54,11 @@ const Chatroom: React.FC = () => {
   const { id } = useParams()
   const store = useContext(ChatStore)
   const chatTop = useRef<HTMLDivElement>()
+  const chatBottom = useRef<HTMLDivElement>()
   const scrollRef = useRef<HTMLDivElement>()
   const msgContainerRef = useRef<HTMLDivElement>()
+  const [scrollLock, setScrollLock] = useState(false)
+  const debounce = useDebounce(700)
 
   useEffect(() => {
     store.connect(id)
@@ -61,17 +69,32 @@ const Chatroom: React.FC = () => {
       return
     }
     const observer = new IntersectionObserver(intersectionList => {
-      if (intersectionList[0].isIntersecting) {
-        store.loadMore()
-      }
+      intersectionList.forEach(e => {
+        switch (e.target){
+          case chatTop.current:
+            if (e.isIntersecting) {
+              debounce(() => store.loadMore())
+            }
+            break
+          case chatBottom.current:
+            setScrollLock(!e.isIntersecting)
+            break
+        }
+      })
+
     },                                        { root: msgContainerRef.current })
     observer.observe(chatTop.current)
+    observer.observe(chatBottom.current)
     return () => {
       observer.unobserve(chatTop.current)
+      observer.unobserve(chatBottom.current)
     }
   },        [store.connected])
 
   useEffect(() => {
+    if (scrollLock) {
+      return
+    }
     scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
   },        [store.messages.length])
 
@@ -92,11 +115,12 @@ const Chatroom: React.FC = () => {
         <MessageContainer ref={msgContainerRef}>
           <Scrollable ref={scrollRef}>
             <LoadMore ref={chatTop} >...</LoadMore>
-          {store.messages.map(m => {
-            return (
-              <ChatMessage key={m.hash} author={m.author} date={m.time} self={store.self}>{m.text}</ChatMessage>
-            )
-          })}
+            {store.messages.map(m => {
+              return (
+                <ChatMessage key={m.hash} author={m.author} date={m.time} self={store.self}>{m.text}</ChatMessage>
+              )
+            })}
+            <ChatBottom ref={chatBottom}>&nbsp;</ChatBottom>
           </Scrollable>
         </MessageContainer>
         <ChatInput onSubmit={msg => sendMsg(msg)} />
