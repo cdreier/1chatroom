@@ -1,6 +1,6 @@
 LINKERFLAGS = -X main.Version=`git describe --tags --always --long --dirty` -X main.BuildTimestamp=`date -u '+%Y-%m-%d_%I:%M:%S_UTC'`
 
-VERSION := $(if $(DRONE_TAG),$(DRONE_TAG),local)
+VERSION := $(if $(DRONE_TAG),$(DRONE_TAG),master)
 BINARY_NAME := $(if $(DRONE_REPO_NAME),$(DRONE_REPO_NAME),main)
 
 build-local-docker:

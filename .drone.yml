@@ -27,8 +27,6 @@ steps:
 
   - name: dockerize
     image: plugins/docker
-    environment:
-      CHATROOM_BIN: ${DRONE_REPO_NAME}-${DRONE_TAG}-alpine
     settings:
       username:
         from_secret: docker_username
@@ -36,6 +34,8 @@ steps:
         from_secret: docker_password
       repo: drailing/1chatroom
       auto_tag: true
+      build_args: 
+        - CHATROOM_BIN=${DRONE_REPO_NAME}-${DRONE_TAG=master}-alpine
 
   - name: github_release
     image: plugins/github-release

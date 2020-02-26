@@ -16,7 +16,8 @@ RUN apk add glibc-2.30-r0.apk
 RUN rm -rf /var/cache/apk/*
 
 # preparing chatroom app
-ENV CHATROOM_BIN main-local-alpine
+ARG CHATROOM_BIN_ARG=main-master-alpine
+ENV CHATROOM_BIN=$CHATROOM_BIN_ARG
 RUN mkdir /app
 ADD $CHATROOM_BIN /app
 WORKDIR /app
