@@ -42,14 +42,17 @@ class ChatModel {
   @observable self: string = ''
   @observable messages: MessageModel[] = []
   @observable users: UserModel[] = []
+  @observable connected: boolean = false
 
   socket: WebSocket = null
 
   connect(id: string) {
     this.socket = new WebSocket(`${location.protocol.replace('http', 'ws')}//${location.host}/api/ws?Authorization=${id}`)
-    this.socket.onopen = (evt) => console.log('OPEN')
+    this.socket.onopen = (evt) => {
+      this.connected = true
+    }
     this.socket.onclose = (evt) => {
-      console.log('CLOSE')
+      this.connected = false
       this.socket = null
     }
     this.socket.onerror = (evt) => console.log('ERROR: ', evt)
@@ -76,10 +79,13 @@ class ChatModel {
 
   loadMore() {
     if (this.messages.length === 0) {
-      return
+      this.socket.send(JSON.stringify({
+        type: MESSAGETYPES.LOADMORE,
+      }))
+      return 
     }
     this.socket.send(JSON.stringify({
-      last: this.messages[0].time,
+      since: this.messages[0].time,
       type: MESSAGETYPES.LOADMORE,
     }))
   }

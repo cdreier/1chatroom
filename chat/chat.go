@@ -2,6 +2,7 @@ package chat
 
 import (
 	"context"
+	"time"
 
 	"github.com/gorilla/websocket"
 
@@ -30,6 +31,7 @@ type socketMessage struct {
 
 type ChatPersistence interface {
 	GetMessages(ctx context.Context, count int) ([]storage.Message, error)
+	GetMessagesSince(ctx context.Context, since time.Time, count int) ([]storage.Message, error)
 	GetUser(ctx context.Context, userID string) (storage.User, error)
 	GetAllUsers(ctx context.Context) ([]storage.User, error)
 	VerifyUserID(ctx context.Context, userID string) bool

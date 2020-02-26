@@ -17,9 +17,9 @@ var upgrader = websocket.Upgrader{
 }
 
 type incommingMessage struct {
-	Text string
-	Type string
-	Last time.Time
+	Text  string
+	Type  string
+	Since time.Time
 }
 
 func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
@@ -38,18 +38,6 @@ func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
 	c.users[userID] = &chatUser{
 		User: user,
 		conn: connection,
-	}
-
-	// send to new user the least few messages
-	history, _ := c.db.GetMessages(r.Context(), 15)
-	for _, m := range history {
-		bm := broadcastMessage{
-			Author: m.Author,
-			Text:   m.Text,
-			Date:   m.CreatedAt,
-		}
-		bm.Type = msgTypeMessage
-		connection.WriteJSON(bm)
 	}
 
 	// broadcast to all, current user state
@@ -89,8 +77,26 @@ func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
 			})
 			break
 		case msgTypeLoadMore:
-			log.Println("LOADMORE", msg)
+			defaultTime := time.Time{}
+			if msg.Since == defaultTime {
+				msg.Since = time.Now()
+			}
+			history, _ := c.db.GetMessagesSince(r.Context(), msg.Since, 10)
+			sendMessages(connection, history)
+			break
 		}
 
+	}
+}
+
+func sendMessages(con *websocket.Conn, msgs []storage.Message) {
+	for _, m := range msgs {
+		bm := broadcastMessage{
+			Author: m.Author,
+			Text:   m.Text,
+			Date:   m.CreatedAt,
+		}
+		bm.Type = msgTypeMessage
+		con.WriteJSON(bm)
 	}
 }

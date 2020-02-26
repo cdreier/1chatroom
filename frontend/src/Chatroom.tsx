@@ -57,9 +57,11 @@ const Chatroom: React.FC = () => {
   },        [id])
 
   useEffect(() => {
+    if (!store.connected) {
+      return
+    }
     const observer = new IntersectionObserver(intersectionList => {
       if (intersectionList[0].isIntersecting) {
-        console.log('loadmore')
         store.loadMore()
       }
     },                                        { root: msgContainerRef.current })
@@ -67,7 +69,7 @@ const Chatroom: React.FC = () => {
     return () => {
       observer.unobserve(chatTop.current)
     }
-  },        [])
+  },        [store.connected])
 
   useEffect(() => {
     scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })

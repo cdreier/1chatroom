@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"log"
+	"time"
 
 	"github.com/cdreier/golang-snippets/snippets"
 	"github.com/jinzhu/gorm"
@@ -58,7 +59,13 @@ func (d *DB) DeleteUser(ctx context.Context, userID string) error {
 
 func (d *DB) GetMessages(ctx context.Context, count int) ([]Message, error) {
 	var result []Message
-	d.conn.Find(&result, new(Message)).Order("CreatedAT DESC").Limit(count)
+	d.conn.Order("CreatedAT DESC").Limit(count).Find(&result, new(Message))
+	return result, nil
+}
+
+func (d *DB) GetMessagesSince(ctx context.Context, since time.Time, count int) ([]Message, error) {
+	var result []Message
+	d.conn.Where("created_at < ?", since).Order("created_at DESC").Limit(count).Find(&result)
 	return result, nil
 }
 
