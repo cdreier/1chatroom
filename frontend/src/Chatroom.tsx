@@ -41,16 +41,34 @@ const ChatContainer = styled.div`
   height: 100%;
 `
 
+const LoadMore = styled.div`
+`
+
 const Chatroom: React.FC = () => {
 
   const { id } = useParams()
   const store = useContext(ChatStore)
+  const chatTop = useRef<HTMLDivElement>()
+  const scrollRef = useRef<HTMLDivElement>()
+  const msgContainerRef = useRef<HTMLDivElement>()
 
   useEffect(() => {
     store.connect(id)
   },        [id])
 
-  const scrollRef = useRef<HTMLDivElement>()
+  useEffect(() => {
+    const observer = new IntersectionObserver(intersectionList => {
+      if (intersectionList[0].isIntersecting) {
+        console.log('loadmore')
+        store.loadMore()
+      }
+    },                                        { root: msgContainerRef.current })
+    observer.observe(chatTop.current)
+    return () => {
+      observer.unobserve(chatTop.current)
+    }
+  },        [])
+
   useEffect(() => {
     scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
   },        [store.messages.length])
@@ -69,8 +87,9 @@ const Chatroom: React.FC = () => {
         })}
       </UserList>
       <ChatContainer>
-        <MessageContainer>
+        <MessageContainer ref={msgContainerRef}>
           <Scrollable ref={scrollRef}>
+            <LoadMore ref={chatTop} >...</LoadMore>
           {store.messages.map(m => {
             return (
               <ChatMessage key={m.hash} author={m.author} date={m.time} self={store.self}>{m.text}</ChatMessage>

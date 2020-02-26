@@ -19,6 +19,7 @@ var upgrader = websocket.Upgrader{
 type incommingMessage struct {
 	Text string
 	Type string
+	Last time.Time
 }
 
 func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
@@ -88,7 +89,7 @@ func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
 			})
 			break
 		case msgTypeLoadMore:
-			log.Println("LOADMORE")
+			log.Println("LOADMORE", msg)
 		}
 
 	}

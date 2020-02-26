@@ -33,6 +33,7 @@ class UserModel {
 enum MESSAGETYPES {
   USERSTATUS = 'USERSTATUS',
   MESSAGE = 'MESSAGE',
+  LOADMORE = 'MORE',
 }
 
 class ChatModel {
@@ -71,7 +72,16 @@ class ChatModel {
         this.messages.replace(sortedMessages)
         break
     }
-    console.log('RESPONSE: ', data)
+  }
+
+  loadMore() {
+    if (this.messages.length === 0) {
+      return
+    }
+    this.socket.send(JSON.stringify({
+      last: this.messages[0].time,
+      type: MESSAGETYPES.LOADMORE,
+    }))
   }
 
   sendMessage(msg: string) {
