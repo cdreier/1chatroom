@@ -10,6 +10,7 @@ class AdminModel {
   @observable users: User[] = []
   @observable token: string = ''
   @observable tokenSubmitted: boolean = false
+  @observable errorMessage: string = ''
 
   @action
   fetchUsers() {
@@ -17,11 +18,18 @@ class AdminModel {
       headers: {
         Authorization: this.token,
       },
+    }).then(r => {
+      if (!r.ok) throw r
+      return r.json()
     })
-      .then(r => r.json())
-      .then(data => {
-        this.users = data
+    .then(data => {
+      this.users = data
+    })
+    .catch(e => {
+      e.text().then((msg: string) => {
+        this.errorMessage = msg
       })
+    })
   }
 
   @action
@@ -35,11 +43,18 @@ class AdminModel {
       body: JSON.stringify({
         name: userName,
       }),
-    }).then(r => r.json())
-      .then(u => {
-        console.log(u)
-        this.users.push(u)
+    }).then(r => {
+      if (!r.ok) throw r
+      return r.json()
+    })
+    .then(u => {
+      this.users.push(u)
+    })
+    .catch(e => {
+      e.text().then((msg: string) => {
+        this.errorMessage = msg
       })
+    })
   }
 }
 

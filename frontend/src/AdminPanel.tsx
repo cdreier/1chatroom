@@ -38,6 +38,9 @@ const AdminPanel: React.FC = () => {
         <button onClick={() => saveUser()}>save</button>
       </div>
       <div>
+        {store.errorMessage}
+      </div>
+      <div>
         <Table>
           <TableHead>
             <span>Name</span>
