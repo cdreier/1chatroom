@@ -35,7 +35,7 @@ steps:
       repo: drailing/1chatroom
       auto_tag: true
       build_args: 
-        - CHATROOM_BIN=${DRONE_REPO_NAME}-${DRONE_TAG=master}-alpine
+        - CHATROOM_BIN_ARG=${DRONE_REPO_NAME}-${DRONE_TAG=master}-alpine
 
   - name: github_release
     image: plugins/github-release
