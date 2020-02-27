@@ -33,7 +33,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSubmit }) => {
   return (
     <InputContainer>
       <form onSubmit={(e) => submit(e)}>
-        <Input value={msg} onChange={e => setMsg(e.target.value)} />
+        <Input autoFocus value={msg} onChange={e => setMsg(e.target.value)} />
       </form>
     </InputContainer>
   )
