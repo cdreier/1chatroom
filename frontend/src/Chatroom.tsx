@@ -33,6 +33,8 @@ const UserList = styled.div`
   border-right: 1px solid ${props => props.theme.colors.secondary};
   font-size: 1em;
   font-family: ${props => props.theme.fonts.secondary};
+  background-color: rgba(255, 255, 255, 0.4);
+  padding: 0 9px;
 `
 
 const ChatContainer = styled.div`

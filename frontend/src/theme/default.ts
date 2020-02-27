@@ -12,6 +12,7 @@ declare module 'styled-components' {
       background2: string,
       background3: string,
       black: string,
+      borders: string,
       secondary: string,
       ownMessage: string,
       otherMessage: string,
@@ -32,9 +33,10 @@ const Theme = {
     background2: '#dfdfdf',
     background3: '#eaeaea',
     black: '#333',
-    secondary: '#eaeaea',
-    ownMessage: '#C7EAF9',
-    otherMessage: '#C7F9F9',
+    borders: '#eaeaea',
+    secondary:'rgba(250,157,38, 0.0)',
+    ownMessage: '#e8f9f2',
+    otherMessage: '#fafafa',
   },
 }
 
