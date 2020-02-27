@@ -17,6 +17,14 @@ const Container = styled.div`
 const GlobalStyle = createGlobalStyle`
   body {
     background-color: ${props => props.theme.colors.background};
+    background-image: linear-gradient(30deg, ${props => props.theme.colors.background2} 12%, transparent 12.5%, transparent 87%, ${props => props.theme.colors.background2} 87.5%, ${props => props.theme.colors.background2}),
+    linear-gradient(150deg, ${props => props.theme.colors.background2} 12%, transparent 12.5%, transparent 87%, ${props => props.theme.colors.background2} 87.5%, ${props => props.theme.colors.background2}),
+    linear-gradient(30deg, ${props => props.theme.colors.background2} 12%, transparent 12.5%, transparent 87%, ${props => props.theme.colors.background2} 87.5%, ${props => props.theme.colors.background2}),
+    linear-gradient(150deg, ${props => props.theme.colors.background2} 12%, transparent 12.5%, transparent 87%, ${props => props.theme.colors.background2} 87.5%, ${props => props.theme.colors.background2}),
+    linear-gradient(60deg, ${props => props.theme.colors.background3} 25%, transparent 25.5%, transparent 75%, ${props => props.theme.colors.background3} 75%, ${props => props.theme.colors.background3}),
+    linear-gradient(60deg, ${props => props.theme.colors.background3} 25%, transparent 25.5%, transparent 75%, ${props => props.theme.colors.background3} 75%, ${props => props.theme.colors.background3});
+    background-size:40px 70px;
+    background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px;
   }
 `
 

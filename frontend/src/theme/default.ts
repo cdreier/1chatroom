@@ -9,6 +9,8 @@ declare module 'styled-components' {
     },
     colors: {
       background: string,
+      background2: string,
+      background3: string,
       black: string,
       secondary: string,
       ownMessage: string,
@@ -26,7 +28,9 @@ const Theme = {
     lineHeightBig: '1.65em',
   },
   colors: {
-    background: '#fff',
+    background: '#f1f1f1',
+    background2: '#dfdfdf',
+    background3: '#eaeaea',
     black: '#333',
     secondary: '#eaeaea',
     ownMessage: '#C7EAF9',
