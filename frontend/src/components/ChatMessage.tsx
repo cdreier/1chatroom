@@ -26,9 +26,11 @@ const ChatHead = styled.div`
 `
 
 const Author = styled.span`
+  color: ${props => props.theme.colors.black};
 `
 const ChatTime = styled.span`
   margin-left: 30px;
+  color: ${props => props.theme.colors.black};
 `
 
 const MessageBody = styled.p`
@@ -36,6 +38,7 @@ const MessageBody = styled.p`
   font-family: ${props => props.theme.fonts.primary};
   font-size: ${props => props.theme.fonts.big};
   line-height: ${props => props.theme.fonts.lineHeightBig};
+  color: ${props => props.theme.colors.black};
 `
 
 interface ChatMessageProps {
