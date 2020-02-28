@@ -25,7 +25,7 @@ const Theme = {
     primary: 'Playfair Display',
     secondary: 'Roboto',
     normal: '1em',
-    big: '1.4em',
+    big: '1.2em',
     lineHeightBig: '1.65em',
   },
   colors: {
