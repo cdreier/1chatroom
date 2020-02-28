@@ -64,7 +64,9 @@ class ChatModel {
     switch (data.type) {
       case MESSAGETYPES.USERSTATUS.toString():
         this.users = data.users.map((u: UserModel) => UserModel.fromJSON(u))
-        this.self = data.self
+        if (this.self === '') {
+          this.self = data.self
+        }
         break
       case MESSAGETYPES.MESSAGE.toString():
         this.messages.push(new MessageModel(data.author, data.text, data.date))
@@ -82,7 +84,7 @@ class ChatModel {
       this.socket.send(JSON.stringify({
         type: MESSAGETYPES.LOADMORE,
       }))
-      return 
+      return
     }
     this.socket.send(JSON.stringify({
       since: this.messages[0].time,
