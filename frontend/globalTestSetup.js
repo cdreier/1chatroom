@@ -1,6 +1,5 @@
 require('jest-styled-components')
 require('@testing-library/jest-dom/extend-expect')
+const Intl = require('intl')
 
-var IntlPolyfill    = require('intl');
-Intl.NumberFormat   = IntlPolyfill.NumberFormat;
-Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat;
+Intl.DateTimeFormat = Intl.DateTimeFormat('de-DE')

@@ -57,9 +57,7 @@ exports[`ChatMessage it renders other messages 1`] = `
     <span
       className="c3"
     >
-      1970-1-1
-       - 
-      1:00:00 AM
+      1/1/1970, 1:00:00 AM
     </span>
   </div>
   <p
@@ -130,9 +128,7 @@ exports[`ChatMessage it renders own messages 1`] = `
     <span
       className="c3"
     >
-      1970-1-1
-       - 
-      1:00:00 AM
+      1/1/1970, 1:00:00 AM
     </span>
   </div>
   <p
