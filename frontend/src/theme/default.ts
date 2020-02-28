@@ -17,6 +17,9 @@ declare module 'styled-components' {
       ownMessage: string,
       otherMessage: string,
     },
+    util: {
+      breakpoint: string,
+    }
   }
 }
 
@@ -37,6 +40,9 @@ const Theme = {
     secondary:'rgba(250,157,38, 0.0)',
     ownMessage: '#e8f9f2',
     otherMessage: '#fafafa',
+  },
+  util: {
+    breakpoint: '(min-width: 768px)',
   },
 }
 

@@ -36,6 +36,11 @@ const UserList = styled.div`
   color: ${props => props.theme.colors.black};
   background-color: rgba(255, 255, 255, 0.4);
   padding: 0 9px;
+  display: none;
+
+  @media ${props => props.theme.util.breakpoint} {
+    display: block;
+  }
 `
 
 const ChatContainer = styled.div`

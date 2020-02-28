@@ -6,12 +6,16 @@ import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
 import Theme from './theme/default'
 
 const Container = styled.div`
-  width: 900px;
-  height: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   padding: 0 12px;
+
+  @media ${props => props.theme.util.breakpoint} {
+    width: 900px;
+    height: 100%;
+  }
+
 `
 
 const GlobalStyle = createGlobalStyle`
@@ -26,6 +30,7 @@ const GlobalStyle = createGlobalStyle`
     background-size:40px 70px;
     background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px;
   }
+
 `
 
 const App: React.FC = () => {
