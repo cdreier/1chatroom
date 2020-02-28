@@ -4,16 +4,13 @@ class MessageModel {
   author: string = ''
   text: string = ''
   time: Date = new Date()
+  id: number = 0
 
-  constructor(author: string, msg: string, time: string) {
+  constructor(id: number, author: string, msg: string, time: string) {
+    this.id = id
     this.author = author
     this.text = msg
     this.time = new Date(time)
-  }
-
-  @computed
-  get hash(): string {
-    return btoa(this.author + this.text + this.time.toString())
   }
 
 }
@@ -69,7 +66,7 @@ class ChatModel {
         }
         break
       case MESSAGETYPES.MESSAGE.toString():
-        this.messages.push(new MessageModel(data.author, data.text, data.date))
+        this.messages.push(new MessageModel(data.id, data.author, data.text, data.date))
         const sortedMessages = this.messages.slice().sort((a: MessageModel, b: MessageModel) => {
           return a.time.getTime() - b.time.getTime()
         })

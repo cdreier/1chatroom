@@ -10,6 +10,7 @@ type broadcastMessage struct {
 	Text   string    `json:"text,omitempty"`
 	Author string    `json:"author,omitempty"`
 	Date   time.Time `json:"date,omitempty"`
+	ID     uint      `json:"id,omitempty"`
 }
 
 func (c *Chat) broadcastMessage(ctx context.Context, msg broadcastMessage) {

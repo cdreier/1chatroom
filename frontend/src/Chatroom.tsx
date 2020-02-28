@@ -125,7 +125,7 @@ const Chatroom: React.FC = () => {
             <LoadMore ref={chatTop} >...</LoadMore>
             {store.messages.map(m => {
               return (
-                <ChatMessage key={m.hash} author={m.author} date={m.time} self={store.self}>{m.text}</ChatMessage>
+                <ChatMessage key={m.id} author={m.author} date={m.time} self={store.self}>{m.text}</ChatMessage>
               )
             })}
             <ChatBottom ref={chatBottom}>&nbsp;</ChatBottom>

@@ -78,7 +78,7 @@ func (d *DB) VerifyUserID(ctx context.Context, userID string) bool {
 	return u.ID == userID
 }
 
-func (d *DB) StoreMessage(ctx context.Context, msg Message) error {
-	d.conn.Create(&msg)
+func (d *DB) StoreMessage(ctx context.Context, msg *Message) error {
+	d.conn.Create(msg)
 	return nil
 }

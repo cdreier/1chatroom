@@ -65,16 +65,20 @@ func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
 
 		switch msg.Type {
 		case msgTypeMessage:
-			c.broadcastMessage(r.Context(), broadcastMessage{
+
+			m := storage.Message{
 				Author: user.Name,
 				Text:   msg.Text,
-				Date:   time.Now(),
+			}
+			c.db.StoreMessage(r.Context(), &m)
+
+			c.broadcastMessage(r.Context(), broadcastMessage{
+				ID:     m.ID,
+				Author: m.Author,
+				Text:   m.Text,
+				Date:   m.CreatedAt,
 			})
 
-			c.db.StoreMessage(r.Context(), storage.Message{
-				Author: user.Name,
-				Text:   msg.Text,
-			})
 			break
 		case msgTypeLoadMore:
 			defaultTime := time.Time{}
@@ -92,6 +96,7 @@ func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
 func sendMessages(con *websocket.Conn, msgs []storage.Message) {
 	for _, m := range msgs {
 		bm := broadcastMessage{
+			ID:     m.ID,
 			Author: m.Author,
 			Text:   m.Text,
 			Date:   m.CreatedAt,
