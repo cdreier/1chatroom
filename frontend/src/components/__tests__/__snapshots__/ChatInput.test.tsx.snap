@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatInput it renders 1`] = `
+.c0 {
+  background-color: rgba(250,157,38,0.0);
+  padding: 12px;
+}
+
+.c0 >form {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 6px;
+  outline: none;
+}
+
+<div
+  className="c0"
+>
+  <form
+    onSubmit={[Function]}
+  >
+    <input
+      autoFocus={true}
+      className="c1"
+      data-testid="input"
+      onChange={[Function]}
+      value=""
+    />
+  </form>
+</div>
+`;
