@@ -10,7 +10,7 @@ describe('ChatMessage', () => {
     const sub = jest.fn()
     const component = renderer.create(
       <ThemeProvider theme={Theme}>
-        <ChatMessage author={'christian'} self={'christian'} date={new Date(0)}   >
+        <ChatMessage author={'christian'} self={'christian'} date={new Date(0)} dateFormatter={d => d.toUTCString()}  >
           this is my chat message
         </ChatMessage>
       </ThemeProvider>,
@@ -22,7 +22,7 @@ describe('ChatMessage', () => {
     const sub = jest.fn()
     const component = renderer.create(
       <ThemeProvider theme={Theme}>
-        <ChatMessage author={'stefan'} self={'christian'} date={new Date(500)}   >
+        <ChatMessage author={'stefan'} self={'christian'} date={new Date(500)}  dateFormatter={d => d.toUTCString()}  >
           this is another chat message
         </ChatMessage>
       </ThemeProvider>,

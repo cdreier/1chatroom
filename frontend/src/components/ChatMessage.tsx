@@ -46,28 +46,24 @@ interface ChatMessageProps {
   date: Date
   children: string
   self: string
+  dateFormatter?: (d: Date) => string
 }
 
-const formatter = new Intl.DateTimeFormat(navigator.language, {
-  year: 'numeric',
-  month: 'numeric',
-  day: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric',
-  second: 'numeric',
-}).format
-
-const ChatMessage: React.FC<ChatMessageProps> = ({ children, author, date, self }) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({ children, author, date, self, dateFormatter }) => {
 
   return (
     <Container ownMessage={self === author}>
       <ChatHead>
         <Author>{author}</Author>
-        <ChatTime>{formatter(date)}</ChatTime>
+        <ChatTime>{dateFormatter(date)}</ChatTime>
       </ChatHead>
       <MessageBody>{children}</MessageBody>
     </Container>
   )
+}
+
+ChatMessage.defaultProps = {
+  dateFormatter: (d: Date) => `${d.toLocaleDateString()}, ${d.toLocaleTimeString()}`,
 }
 
 export default ChatMessage
