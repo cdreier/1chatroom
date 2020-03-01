@@ -17,7 +17,7 @@ describe('ChatInput', () => {
     expect(component).toMatchSnapshot()
   })
 
-  test('that button toggles upload popup', () => {
+  test('that submit event triggers', () => {
     const sub = jest.fn()
     const { getByTestId } = render(
       <ThemeProvider theme={Theme}>
@@ -27,6 +27,17 @@ describe('ChatInput', () => {
     fireEvent.input(getByTestId('input'), { target: { value: 'yay' } })
     fireEvent.submit(getByTestId('input'))
     expect(sub).toBeCalledWith('yay')
+  })
+
+  test('that submit event does not trigger if msg is empty', () => {
+    const sub = jest.fn()
+    const { getByTestId } = render(
+      <ThemeProvider theme={Theme}>
+        <ChatInput onSubmit={sub}  />
+      </ThemeProvider>,
+    )
+    fireEvent.submit(getByTestId('input'))
+    expect(sub).not.toHaveBeenCalled()
   })
 
 })

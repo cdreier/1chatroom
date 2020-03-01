@@ -26,6 +26,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSubmit }) => {
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     e.stopPropagation()
+    if (msg.trim() === '') {
+      return
+    }
     onSubmit(msg)
     setMsg('')
   }
