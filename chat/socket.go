@@ -43,6 +43,11 @@ func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
 	// broadcast to all, current user state
 	c.broadcastUserStatus(r.Context())
 
+	// send welcome message
+	if c.WelcomeMessage != "" {
+		connection.WriteJSON(newSystemMessage(c.WelcomeMessage))
+	}
+
 	for {
 		_, message, err := connection.ReadMessage()
 		if err != nil {

@@ -10,14 +10,16 @@ import (
 )
 
 const (
-	msgTypeUserStatus = "USERSTATUS"
-	msgTypeMessage    = "MESSAGE"
-	msgTypeLoadMore   = "MORE"
+	msgTypeUserStatus    = "USERSTATUS"
+	msgTypeMessage       = "MESSAGE"
+	msgTypeSystemMessage = "MESSAGE"
+	msgTypeLoadMore      = "MORE"
 )
 
 type Chat struct {
-	db    ChatPersistence
-	users map[string]*chatUser
+	db             ChatPersistence
+	users          map[string]*chatUser
+	WelcomeMessage string
 }
 
 type chatUser struct {

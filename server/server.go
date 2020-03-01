@@ -34,6 +34,7 @@ func Run(c *cli.Context) error {
 	}, db)
 
 	chat := chat.NewChatroom(db)
+	chat.WelcomeMessage = c.String("welcomeMessage")
 
 	r := chi.NewRouter()
 

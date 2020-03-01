@@ -49,6 +49,12 @@ func main() {
 				EnvVars: []string{"ADMIN_ENABLED"},
 				Usage:   "if set to false, the admin panel is disabled",
 			},
+			&cli.StringFlag{
+				Name:    "welcomeMessage",
+				EnvVars: []string{"WELCOME_MESSAGE"},
+				Value:   "",
+				Usage:   "the welcome message every user sees when joining",
+			},
 		},
 	}
 
