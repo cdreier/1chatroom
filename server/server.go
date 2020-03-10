@@ -44,7 +44,6 @@ func Run(c *cli.Context) error {
 	distDir := pkger.Dir("/frontend/dist")
 	snippets.ChiFileServer(r, "/dist", distDir)
 
-	r.Get("/*", s.webappHandler)
 	r.Route("/api", func(apiRouter chi.Router) {
 
 		apiRouter.With(chat.UserAuthMiddleware).HandleFunc("/ws", chat.RealtimeHandler)
@@ -57,9 +56,13 @@ func Run(c *cli.Context) error {
 		})
 	})
 
+	r.Get("/service-worker", psh.ServiceWorker)
 	r.Route("/push", func(pushRouter chi.Router) {
 		pushRouter.Get("/publickey", psh.VapidPublicKey)
+		pushRouter.Get("/register", psh.Register)
 	})
+
+	r.Get("/*", s.webappHandler)
 
 	port := c.String("port")
 	log.Println("starting server on port ", port)
