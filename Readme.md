@@ -41,9 +41,10 @@ on the admin page you can create your accounts. Just type in the names, and a li
 there are also a few start options:
 
 ```
---port value               port to start the server on (default: "3000") [$HTTP_PORT]
+--port value              port to start the server on (default: "3000") [$HTTP_PORT]
 --adminToken value        the admin token to log in to the admin panel (default: "asdf") [$ADMIN_TOKEN]
 --adminEnabled            if set to false, the admin panel is disabled (default: true) [$ADMIN_ENABLED]
+--welcomeMessage value    the welcome message every user sees when joining [$WELCOME_MESSAGE]
 ```
 
 ### docker

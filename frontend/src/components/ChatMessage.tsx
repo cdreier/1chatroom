@@ -3,19 +3,23 @@ import styled from 'styled-components'
 
 interface ContainerProps {
   ownMessage: boolean
+  system?: boolean
 }
 
 const Container = styled.div<ContainerProps>`
   border: 1px solid ${props => props.theme.colors.borders};
   background-color: ${props => props.ownMessage ? props.theme.colors.ownMessage : props.theme.colors.otherMessage};
-  padding: 15px;
-  max-width: 500px;
+  ${props => props.ownMessage ? 'align-self: flex-end;' : ''};
   border-bottom-left-radius: ${props => props.ownMessage ? '6px' : '0px'};
-  border-bottom-right-radius: ${props => props.ownMessage ? '0px' : '6px'};;
+  border-bottom-right-radius: ${props => props.ownMessage ? '0px' : '6px'};
+  padding: 15px;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   margin-top: 9px;
-  ${props => props.ownMessage ? 'align-self: flex-end;' : ''};
+
+  max-width: ${props => props.system ? '100%' : '500px'};
+  ${props => props.system ? 'width: 95%' : ''};
+  ${props => props.system ? 'align-self: center;' : ''};
 `
 
 const ChatHead = styled.div`
@@ -28,9 +32,15 @@ const ChatHead = styled.div`
 const Author = styled.span`
   color: ${props => props.theme.colors.black};
 `
-const ChatTime = styled.span`
+
+interface ChatTimeProps {
+  hidden?: boolean
+}
+
+const ChatTime = styled.span<ChatTimeProps>`
   margin-left: 30px;
   color: ${props => props.theme.colors.black};
+  ${props => props.hidden ? 'display: none' : ''};
 `
 
 const MessageBody = styled.p`
@@ -49,13 +59,17 @@ interface ChatMessageProps {
   dateFormatter?: (d: Date) => string
 }
 
+const SYSTEM_MESSAGE_AUTHOR = 'System'
+
 const ChatMessage: React.FC<ChatMessageProps> = ({ children, author, date, self, dateFormatter }) => {
 
+  const isSystemMessage = author === SYSTEM_MESSAGE_AUTHOR
+
   return (
-    <Container ownMessage={self === author}>
+    <Container ownMessage={self === author} system={isSystemMessage}>
       <ChatHead>
         <Author>{author}</Author>
-        <ChatTime>{dateFormatter(date)}</ChatTime>
+        <ChatTime hidden={isSystemMessage}>{dateFormatter(date)}</ChatTime>
       </ChatHead>
       <MessageBody>{children}</MessageBody>
     </Container>

@@ -4,13 +4,13 @@ exports[`ChatMessage it renders other messages 1`] = `
 .c0 {
   border: 1px solid #eaeaea;
   background-color: #fafafa;
-  padding: 15px;
-  max-width: 500px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 6px;
+  padding: 15px;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   margin-top: 9px;
+  max-width: 500px;
 }
 
 .c1 {
@@ -56,6 +56,7 @@ exports[`ChatMessage it renders other messages 1`] = `
     </span>
     <span
       className="c3"
+      hidden={false}
     >
       Thu, 01 Jan 1970 00:00:00 GMT
     </span>
@@ -72,16 +73,16 @@ exports[`ChatMessage it renders own messages 1`] = `
 .c0 {
   border: 1px solid #eaeaea;
   background-color: #e8f9f2;
-  padding: 15px;
-  max-width: 500px;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 0px;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-  margin-top: 9px;
   -webkit-align-self: flex-end;
   -ms-flex-item-align: end;
   align-self: flex-end;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 0px;
+  padding: 15px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  margin-top: 9px;
+  max-width: 500px;
 }
 
 .c1 {
@@ -127,6 +128,7 @@ exports[`ChatMessage it renders own messages 1`] = `
     </span>
     <span
       className="c3"
+      hidden={false}
     >
       Thu, 01 Jan 1970 00:00:00 GMT
     </span>
