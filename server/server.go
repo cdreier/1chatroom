@@ -59,7 +59,7 @@ func Run(c *cli.Context) error {
 	r.Get("/service-worker", psh.ServiceWorker)
 	r.Route("/push", func(pushRouter chi.Router) {
 		pushRouter.Get("/publickey", psh.VapidPublicKey)
-		pushRouter.Get("/register", psh.Register)
+		pushRouter.Post("/register", psh.Register)
 	})
 
 	r.Get("/*", s.webappHandler)

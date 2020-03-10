@@ -39,7 +39,7 @@ navigator.serviceWorker.ready
       })
   }).then((subscription) => {
 
-    fetch('/register', {
+    fetch('/push/register', {
       method: 'post',
       headers: {
         'Content-type': 'application/json',
