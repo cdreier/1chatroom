@@ -48,15 +48,13 @@ func (d *DB) GetUser(ctx context.Context, userID string) (User, error) {
 }
 
 func (d *DB) StoreUser(ctx context.Context, u *User) error {
-	d.conn.Create(&u)
-	return nil
+	return d.conn.Create(&u).Error
 }
 
 func (d *DB) DeleteUser(ctx context.Context, userID string) error {
-	d.conn.Delete(&User{
+	return d.conn.Delete(&User{
 		ID: userID,
-	})
-	return nil
+	}).Error
 }
 
 func (d *DB) GetMessages(ctx context.Context, count int) ([]Message, error) {
@@ -81,8 +79,7 @@ func (d *DB) VerifyUserID(ctx context.Context, userID string) bool {
 }
 
 func (d *DB) StoreMessage(ctx context.Context, msg *Message) error {
-	d.conn.Create(msg)
-	return nil
+	return d.conn.Create(msg).Error
 }
 
 func (d *DB) StoreKeypair(ctx context.Context, pair *Vapid) error {
