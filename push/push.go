@@ -2,6 +2,8 @@ package push
 
 import (
 	"context"
+	"encoding/json"
+	"io/ioutil"
 	"log"
 
 	"github.com/SherClockHolmes/webpush-go"
@@ -42,4 +44,25 @@ func (p *Push) loadKeys() {
 	}
 	p.privateKey = pair.PrivateKey
 	p.publicKey = pair.PublicKey
+}
+
+func (p *Push) SendNotification(subscription string, message string) error {
+
+	s := &webpush.Subscription{}
+	json.Unmarshal([]byte(subscription), s)
+
+	// TODO
+	resp, err := webpush.SendNotification([]byte(message), s, &webpush.Options{
+		Subscriber:      "1Chatroom",
+		VAPIDPublicKey:  p.publicKey,
+		VAPIDPrivateKey: p.privateKey,
+		TTL:             30,
+	})
+
+	defer resp.Body.Close()
+
+	responseBody, _ := ioutil.ReadAll(resp.Body)
+	log.Println(string(responseBody))
+
+	return err
 }
