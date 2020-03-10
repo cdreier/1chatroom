@@ -32,4 +32,6 @@ func (p *Push) Register(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	var reg Registration
 	json.NewDecoder(r.Body).Decode(&reg)
+	subscription, _ := json.Marshal(reg.Subscription)
+	p.db.SaveRegistration(r.Context(), reg.UserID, string(subscription))
 }
