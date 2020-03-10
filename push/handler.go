@@ -1,9 +1,9 @@
 package push
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 
 	"github.com/markbates/pkger"
@@ -30,6 +30,6 @@ func (p *Push) ServiceWorker(w http.ResponseWriter, r *http.Request) {
 
 func (p *Push) Register(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-	all, _ := ioutil.ReadAll(r.Body)
-	log.Println(string(all))
+	var reg Registration
+	json.NewDecoder(r.Body).Decode(&reg)
 }

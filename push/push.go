@@ -17,6 +17,7 @@ type Push struct {
 type PushPersistence interface {
 	GetKeypair(context.Context) (storage.Vapid, error)
 	StoreKeypair(context.Context, *storage.Vapid) error
+	SaveRegistration(ctx context.Context, userID string, subscription string) error
 }
 
 func NewPush(db PushPersistence) *Push {

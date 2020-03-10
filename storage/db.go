@@ -96,3 +96,12 @@ func (d *DB) GetKeypair(ctx context.Context) (Vapid, error) {
 	}
 	return pair, nil
 }
+
+func (d *DB) SaveRegistration(ctx context.Context, userID string, subscription string) error {
+	user, err := d.GetUser(ctx, userID)
+	if err != nil {
+		return err
+	}
+	user.Subscription = subscription
+	return d.conn.Save(user).Error
+}
