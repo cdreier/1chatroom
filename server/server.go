@@ -5,6 +5,7 @@ import (
 
 	"github.com/cdreier/chatroom/admin"
 	"github.com/cdreier/chatroom/chat"
+	"github.com/cdreier/chatroom/push"
 	"github.com/cdreier/chatroom/storage"
 
 	"github.com/cdreier/golang-snippets/snippets"
@@ -33,6 +34,8 @@ func Run(c *cli.Context) error {
 		Token:   c.String("adminToken"),
 	}, db)
 
+	psh := push.NewPush(db)
+
 	chat := chat.NewChatroom(db)
 	chat.WelcomeMessage = c.String("welcomeMessage")
 
@@ -52,6 +55,10 @@ func Run(c *cli.Context) error {
 			adminRouter.Post("/users", adm.AddUser)
 			adminRouter.Delete("/users/{id}", adm.RmUser)
 		})
+	})
+
+	r.Route("/push", func(pushRouter chi.Router) {
+		pushRouter.Get("/publickey", psh.VapidPublicKey)
 	})
 
 	port := c.String("port")

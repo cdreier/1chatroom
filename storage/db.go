@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -25,6 +26,7 @@ func NewDB() *DB {
 	db.conn = conn
 	db.conn.AutoMigrate(&User{})
 	db.conn.AutoMigrate(&Message{})
+	db.conn.AutoMigrate(&Vapid{})
 
 	return db
 }
@@ -81,4 +83,19 @@ func (d *DB) VerifyUserID(ctx context.Context, userID string) bool {
 func (d *DB) StoreMessage(ctx context.Context, msg *Message) error {
 	d.conn.Create(msg)
 	return nil
+}
+
+func (d *DB) StoreKeypair(ctx context.Context, pair *Vapid) error {
+	return d.conn.Create(pair).Error
+}
+
+func (d *DB) GetKeypair(ctx context.Context) (Vapid, error) {
+	pair := Vapid{}
+	query := Vapid{}
+	query.ID = 1
+	d.conn.First(&pair, query)
+	if pair.ID != 1 {
+		return pair, fmt.Errorf("no Vapid found")
+	}
+	return pair, nil
 }

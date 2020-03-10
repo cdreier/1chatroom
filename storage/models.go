@@ -19,3 +19,9 @@ type Message struct {
 	Author string
 	Text   string
 }
+
+type Vapid struct {
+	gorm.Model
+	PrivateKey string
+	PublicKey  string
+}
