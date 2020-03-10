@@ -35,7 +35,6 @@ enum MESSAGETYPES {
 
 class ChatModel {
 
-  @observable id: string = ''
   @observable self: string = ''
   @observable messages: MessageModel[] = []
   @observable users: UserModel[] = []

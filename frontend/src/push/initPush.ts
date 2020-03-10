@@ -15,7 +15,8 @@ function urlBase64ToUint8Array(base64String: string) {
   return outputArray
 }
 
-navigator.serviceWorker.ready
+const initPush = (userID: string) => {
+  navigator.serviceWorker.ready
   .then((registration) => {
 
     return registration.pushManager.getSubscription()
@@ -46,9 +47,14 @@ navigator.serviceWorker.ready
       },
       body: JSON.stringify({
         subscription,
+        userID,
       }),
     })
 
   }).catch(e => {
     console.error(e)
   })
+
+}
+
+export default initPush

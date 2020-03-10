@@ -4,7 +4,6 @@ import Chatroom from './Chatroom'
 import AdminPanel from './AdminPanel'
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
 import Theme from './theme/default'
-import './push/initPush'
 
 const Container = styled.div`
   margin: 0 auto;
