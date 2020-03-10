@@ -26,7 +26,7 @@ type AdminConfig struct {
 
 type AdminPersistence interface {
 	GetAllUsers(ctx context.Context) ([]storage.User, error)
-	StoreUser(ctx context.Context, u storage.User) error
+	StoreUser(ctx context.Context, u *storage.User) error
 	DeleteUser(ctx context.Context, userID string) error
 }
 

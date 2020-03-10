@@ -45,7 +45,7 @@ func (d *DB) GetUser(ctx context.Context, userID string) (User, error) {
 	return u, nil
 }
 
-func (d *DB) StoreUser(ctx context.Context, u User) error {
+func (d *DB) StoreUser(ctx context.Context, u *User) error {
 	d.conn.Create(&u)
 	return nil
 }
