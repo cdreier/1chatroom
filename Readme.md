@@ -19,7 +19,9 @@ just choose an admin password (with a flag or environment variable), create acco
 * sqlite persistence
 * web push notifications
 * small footprint
-  * in terms of size, memory, or cpu usage
+  * in terms of size (biggest binary is ~16MB)
+  * memory (like 4 MB)
+  * or cpu usage
 * admin interface to create "accounts"
 
 ## run it
