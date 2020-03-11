@@ -18,6 +18,7 @@ const (
 
 type Chat struct {
 	db             ChatPersistence
+	notifications  NotificationSender
 	users          map[string]*chatUser
 	WelcomeMessage string
 }
@@ -40,9 +41,14 @@ type ChatPersistence interface {
 	StoreMessage(ctx context.Context, msg *storage.Message) error
 }
 
-func NewChatroom(db ChatPersistence) *Chat {
+type NotificationSender interface {
+	SendNotification(user storage.User, message string) error
+}
+
+func NewChatroom(db ChatPersistence, sender NotificationSender) *Chat {
 	c := new(Chat)
 	c.db = db
+	c.notifications = sender
 	c.users = make(map[string]*chatUser)
 	return c
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/cdreier/chatroom/admin"
 	"github.com/cdreier/chatroom/chat"
+	"github.com/cdreier/chatroom/push"
 	"github.com/cdreier/chatroom/storage"
 
 	"github.com/cdreier/golang-snippets/snippets"
@@ -33,7 +34,9 @@ func Run(c *cli.Context) error {
 		Token:   c.String("adminToken"),
 	}, db)
 
-	chat := chat.NewChatroom(db)
+	psh := push.NewPush(db)
+
+	chat := chat.NewChatroom(db, psh)
 	chat.WelcomeMessage = c.String("welcomeMessage")
 
 	r := chi.NewRouter()
@@ -41,7 +44,6 @@ func Run(c *cli.Context) error {
 	distDir := pkger.Dir("/frontend/dist")
 	snippets.ChiFileServer(r, "/dist", distDir)
 
-	r.Get("/*", s.webappHandler)
 	r.Route("/api", func(apiRouter chi.Router) {
 
 		apiRouter.With(chat.UserAuthMiddleware).HandleFunc("/ws", chat.RealtimeHandler)
@@ -53,6 +55,15 @@ func Run(c *cli.Context) error {
 			adminRouter.Delete("/users/{id}", adm.RmUser)
 		})
 	})
+
+	r.Get("/service-worker", psh.ServiceWorker)
+	r.Route("/push", func(pushRouter chi.Router) {
+		pushRouter.Use(chat.UserAuthMiddleware)
+		pushRouter.Get("/publickey", psh.VapidPublicKey)
+		pushRouter.Post("/register", psh.Register)
+	})
+
+	r.Get("/*", s.webappHandler)
 
 	port := c.String("port")
 	log.Println("starting server on port ", port)

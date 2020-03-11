@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -25,6 +26,7 @@ func NewDB() *DB {
 	db.conn = conn
 	db.conn.AutoMigrate(&User{})
 	db.conn.AutoMigrate(&Message{})
+	db.conn.AutoMigrate(&Vapid{})
 
 	return db
 }
@@ -45,16 +47,14 @@ func (d *DB) GetUser(ctx context.Context, userID string) (User, error) {
 	return u, nil
 }
 
-func (d *DB) StoreUser(ctx context.Context, u User) error {
-	d.conn.Create(&u)
-	return nil
+func (d *DB) StoreUser(ctx context.Context, u *User) error {
+	return d.conn.Create(&u).Error
 }
 
 func (d *DB) DeleteUser(ctx context.Context, userID string) error {
-	d.conn.Delete(&User{
+	return d.conn.Delete(&User{
 		ID: userID,
-	})
-	return nil
+	}).Error
 }
 
 func (d *DB) GetMessages(ctx context.Context, count int) ([]Message, error) {
@@ -79,6 +79,29 @@ func (d *DB) VerifyUserID(ctx context.Context, userID string) bool {
 }
 
 func (d *DB) StoreMessage(ctx context.Context, msg *Message) error {
-	d.conn.Create(msg)
-	return nil
+	return d.conn.Create(msg).Error
+}
+
+func (d *DB) StoreKeypair(ctx context.Context, pair *Vapid) error {
+	return d.conn.Create(pair).Error
+}
+
+func (d *DB) GetKeypair(ctx context.Context) (Vapid, error) {
+	pair := Vapid{}
+	query := Vapid{}
+	query.ID = 1
+	d.conn.First(&pair, query)
+	if pair.ID != 1 {
+		return pair, fmt.Errorf("no Vapid found")
+	}
+	return pair, nil
+}
+
+func (d *DB) SaveRegistration(ctx context.Context, userID string, subscription string) error {
+	user, err := d.GetUser(ctx, userID)
+	if err != nil {
+		return err
+	}
+	user.Subscription = subscription
+	return d.conn.Save(user).Error
 }

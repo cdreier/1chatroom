@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite'
 import ChatInput from './components/ChatInput'
 import ChatMessage from './components/ChatMessage'
 import useDebounce from './hooks/useDebounce'
+import initPush from './push/initPush'
 
 const Container = styled.div`
   display: flex;
@@ -70,6 +71,7 @@ const Chatroom: React.FC = () => {
 
   useEffect(() => {
     store.connect(id)
+    initPush(id)
   },        [id])
 
   useEffect(() => {
