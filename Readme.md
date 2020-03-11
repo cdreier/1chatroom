@@ -17,6 +17,7 @@ just choose an admin password (with a flag or environment variable), create acco
   * just open an issue with a layout
   * thank you... i really need help with that kind of beautiful stuff
 * sqlite persistence
+* web push notifications
 * small footprint
   * in terms of size, memory, or cpu usage
 * admin interface to create "accounts"
