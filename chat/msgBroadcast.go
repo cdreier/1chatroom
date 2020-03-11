@@ -2,6 +2,7 @@ package chat
 
 import (
 	"context"
+	"fmt"
 	"time"
 )
 
@@ -38,6 +39,18 @@ func (c *Chat) broadcastMessage(ctx context.Context, msg broadcastMessage) {
 
 	for _, u := range c.users {
 		u.conn.WriteJSON(msg)
+	}
+
+	allUsers, err := c.db.GetAllUsers(ctx)
+	if err != nil {
+		return
+	}
+
+	for _, u := range allUsers {
+		if _, online := c.users[u.ID]; online {
+			continue
+		}
+		c.notifications.SendNotification(u, fmt.Sprintf("%s: %s", msg.Author, msg.Text))
 	}
 
 }

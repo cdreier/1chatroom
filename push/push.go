@@ -3,8 +3,9 @@ package push
 import (
 	"context"
 	"encoding/json"
-	"io/ioutil"
+	"fmt"
 	"log"
+	"strings"
 
 	"github.com/SherClockHolmes/webpush-go"
 	"github.com/cdreier/chatroom/storage"
@@ -46,12 +47,15 @@ func (p *Push) loadKeys() {
 	p.publicKey = pair.PublicKey
 }
 
-func (p *Push) SendNotification(subscription string, message string) error {
+func (p *Push) SendNotification(user storage.User, message string) error {
+
+	if user.Subscription == "" || !strings.HasPrefix(user.Subscription, "{") {
+		return fmt.Errorf("unable to send notification: user has no subscription")
+	}
 
 	s := &webpush.Subscription{}
-	json.Unmarshal([]byte(subscription), s)
+	json.Unmarshal([]byte(user.Subscription), s)
 
-	// TODO
 	resp, err := webpush.SendNotification([]byte(message), s, &webpush.Options{
 		Subscriber:      "1Chatroom",
 		VAPIDPublicKey:  p.publicKey,
@@ -61,8 +65,8 @@ func (p *Push) SendNotification(subscription string, message string) error {
 
 	defer resp.Body.Close()
 
-	responseBody, _ := ioutil.ReadAll(resp.Body)
-	log.Println(string(responseBody))
+	// responseBody, _ := ioutil.ReadAll(resp.Body)
+	// log.Println(string(responseBody))
 
 	return err
 }
