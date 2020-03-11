@@ -26,7 +26,11 @@ const initPush = (userID: string) => {
           return subscription
         }
 
-        const response = await fetch('/push/publickey')
+        const response = await fetch('/push/publickey', {
+          headers: {
+            Authorization: userID,
+          },
+        })
         const vapidPublicKey = await response.text()
 
         const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey)
@@ -44,6 +48,7 @@ const initPush = (userID: string) => {
       method: 'post',
       headers: {
         'Content-type': 'application/json',
+        Authorization: userID,
       },
       body: JSON.stringify({
         subscription,
