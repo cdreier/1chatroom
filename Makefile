@@ -9,7 +9,6 @@ build-local-docker:
 build-all:
 	make build-linux
 	make build-alpine
-	make build-mac
 	make build-win
 
 zip-all:
@@ -21,17 +20,17 @@ zip-all:
 
 build-linux:
 	GOOS=linux GOARCH=amd64 pkger
-	GOOS=linux GOARCH=amd64 go build -o $(BINARY_NAME)-$(VERSION)-linux-amd64 -ldflags "$(LINKERFLAGS)"
+	GOOS=linux GOARCH=amd64 CGO_ENABLED=1 go build -o $(BINARY_NAME)-$(VERSION)-linux-amd64 -ldflags "$(LINKERFLAGS)"
 	rm pkged.go
 
 build-mac:
 	GOOS=darwin GOARCH=amd64 pkger
-	GOOS=darwin GOARCH=amd64 go build -o $(BINARY_NAME)-$(VERSION)-darwin-amd64 -ldflags "$(LINKERFLAGS)"
+	GOOS=darwin GOARCH=amd64 CGO_ENABLED=1 go build -o $(BINARY_NAME)-$(VERSION)-darwin-amd64 -ldflags "$(LINKERFLAGS)"
 	rm pkged.go
 
 build-win:
 	GOOS=windows GOARCH=amd64 pkger
-	GOOS=windows GOARCH=amd64 go build -o $(BINARY_NAME)-$(VERSION)-win-amd64.exe -ldflags "$(LINKERFLAGS)"
+	GOOS=windows GOARCH=amd64 CGO_ENABLED=1 go build -o $(BINARY_NAME)-$(VERSION)-win-amd64.exe -ldflags "$(LINKERFLAGS)"
 	rm pkged.go
 
 build-alpine:
