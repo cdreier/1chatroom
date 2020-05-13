@@ -14,7 +14,6 @@ build-all:
 zip-all:
 	mkdir -p release
 	zip release/$(BINARY_NAME)-$(VERSION)-linux-amd64.zip $(BINARY_NAME)-$(VERSION)-linux-amd64
-	zip release/$(BINARY_NAME)-$(VERSION)-darwin-amd64.zip $(BINARY_NAME)-$(VERSION)-darwin-amd64
 	zip release/$(BINARY_NAME)-$(VERSION)-win-amd64.zip $(BINARY_NAME)-$(VERSION)-win-amd64.exe
 	zip release/$(BINARY_NAME)-$(VERSION)-alpine.zip $(BINARY_NAME)-$(VERSION)-alpine
 
