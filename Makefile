@@ -30,7 +30,7 @@ build-mac:
 
 build-win:
 	GOOS=windows GOARCH=amd64 pkger
-	GOOS=windows GOARCH=amd64 CGO_ENABLED=1 go build -o $(BINARY_NAME)-$(VERSION)-win-amd64.exe -ldflags "$(LINKERFLAGS)"
+	GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc go build -o $(BINARY_NAME)-$(VERSION)-win-amd64.exe -ldflags "$(LINKERFLAGS)"
 	rm pkged.go
 
 build-alpine:
