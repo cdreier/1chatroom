@@ -10,31 +10,33 @@ build-all:
 	make build-linux
 	make build-alpine
 	make build-win
+	make build-mac
 
 zip-all:
 	mkdir -p release
 	zip release/$(BINARY_NAME)-$(VERSION)-linux-amd64.zip $(BINARY_NAME)-$(VERSION)-linux-amd64
 	zip release/$(BINARY_NAME)-$(VERSION)-win-amd64.zip $(BINARY_NAME)-$(VERSION)-win-amd64.exe
 	zip release/$(BINARY_NAME)-$(VERSION)-alpine.zip $(BINARY_NAME)-$(VERSION)-alpine
+	zip release/$(BINARY_NAME)-$(VERSION)-darwin-amd64.zip $(BINARY_NAME)-$(VERSION)-darwin-amd64
 
 build-linux:
 	GOOS=linux GOARCH=amd64 pkger
-	GOOS=linux GOARCH=amd64 CGO_ENABLED=1 go build -o $(BINARY_NAME)-$(VERSION)-linux-amd64 -ldflags "$(LINKERFLAGS)"
+	GOOS=linux GOARCH=amd64 go build -o $(BINARY_NAME)-$(VERSION)-linux-amd64 -ldflags "$(LINKERFLAGS)"
 	rm pkged.go
 
 build-mac:
 	GOOS=darwin GOARCH=amd64 pkger
-	GOOS=darwin GOARCH=amd64 CGO_ENABLED=1 go build -o $(BINARY_NAME)-$(VERSION)-darwin-amd64 -ldflags "$(LINKERFLAGS)"
+	GOOS=darwin GOARCH=amd64 go build -o $(BINARY_NAME)-$(VERSION)-darwin-amd64 -ldflags "$(LINKERFLAGS)"
 	rm pkged.go
 
 build-win:
 	GOOS=windows GOARCH=amd64 pkger
-	GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc go build -o $(BINARY_NAME)-$(VERSION)-win-amd64.exe -ldflags "$(LINKERFLAGS)"
+	GOOS=windows GOARCH=amd64 go build -o $(BINARY_NAME)-$(VERSION)-win-amd64.exe -ldflags "$(LINKERFLAGS)"
 	rm pkged.go
 
 build-alpine:
 	GOOS=linux GOARCH=amd64 pkger
-	GOOS=linux GOARCH=amd64 CGO_ENABLED=1 go build -a -o $(BINARY_NAME)-$(VERSION)-alpine -ldflags "$(LINKERFLAGS)"
+	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -a -o $(BINARY_NAME)-$(VERSION)-alpine -ldflags "$(LINKERFLAGS)"
 	rm pkged.go
 
 start:
