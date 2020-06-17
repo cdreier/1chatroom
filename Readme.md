@@ -16,7 +16,7 @@ just choose an admin password (with a flag or environment variable), create acco
   * if you want to contribute a better design, please do so ;) 
   * just open an issue with a layout
   * thank you... i really need help with that kind of beautiful stuff
-* sqlite persistence
+* boltdb persistence with https://github.com/timshannon/bolthold
 * web push notifications
 * small footprint
   * in terms of size (biggest binary is ~16MB)
@@ -35,7 +35,7 @@ at least with a prebuild binaray you need to know what OS you are running. let's
 
 [choose one](https://github.com/cdreier/1chatroom/releases), start it. 
 
-A data folder beside the binary will be created with the sqlite database.
+A data folder beside the binary will be created with the database.
 
 Assuming you test it on localhost, go to http://localhost:3000/admin, type "asdf" - this is the default admin password - and you will see the admin page.
 
