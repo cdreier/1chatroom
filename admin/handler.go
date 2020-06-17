@@ -43,7 +43,11 @@ func (a *Admin) AddUser(w http.ResponseWriter, r *http.Request) {
 		Name: b.Name,
 		ID:   id.String(),
 	}
-	a.db.StoreUser(r.Context(), &u)
+	err = a.db.StoreUser(r.Context(), &u)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	json.NewEncoder(w).Encode(u)
 
 }

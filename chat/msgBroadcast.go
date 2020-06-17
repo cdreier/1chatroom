@@ -11,7 +11,7 @@ type broadcastMessage struct {
 	Text   string    `json:"text,omitempty"`
 	Author string    `json:"author,omitempty"`
 	Date   time.Time `json:"date,omitempty"`
-	ID     uint      `json:"id,omitempty"`
+	ID     uint64    `json:"id,omitempty"`
 }
 
 type systemMessage struct {

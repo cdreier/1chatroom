@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"strings"
 
 	"github.com/SherClockHolmes/webpush-go"
 	"github.com/cdreier/chatroom/storage"
@@ -49,24 +48,30 @@ func (p *Push) loadKeys() {
 
 func (p *Push) SendNotification(user storage.User, message string) error {
 
-	if user.Subscription == "" || !strings.HasPrefix(user.Subscription, "{") {
+	if len(user.Subscription) == 0 {
 		return fmt.Errorf("unable to send notification: user has no subscription")
 	}
 
-	s := &webpush.Subscription{}
-	json.Unmarshal([]byte(user.Subscription), s)
+	for _, sub := range user.Subscription {
 
-	resp, err := webpush.SendNotification([]byte(message), s, &webpush.Options{
-		Subscriber:      "1Chatroom",
-		VAPIDPublicKey:  p.publicKey,
-		VAPIDPrivateKey: p.privateKey,
-		TTL:             30,
-	})
+		s := &webpush.Subscription{}
+		json.Unmarshal([]byte(sub), s)
 
-	defer resp.Body.Close()
+		resp, err := webpush.SendNotification([]byte(message), s, &webpush.Options{
+			Subscriber:      "1Chatroom",
+			VAPIDPublicKey:  p.publicKey,
+			VAPIDPrivateKey: p.privateKey,
+			TTL:             30,
+		})
+		if err != nil {
+			log.Println("unable to send notification", err.Error())
+			continue
+		}
 
-	// responseBody, _ := ioutil.ReadAll(resp.Body)
-	// log.Println(string(responseBody))
+		defer resp.Body.Close()
+		// responseBody, _ := ioutil.ReadAll(resp.Body)
+		// log.Println(string(responseBody))
+	}
 
-	return err
+	return nil
 }
