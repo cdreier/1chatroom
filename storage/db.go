@@ -53,14 +53,13 @@ func (d *DB) DeleteUser(ctx context.Context, userID string) error {
 
 func (d *DB) GetMessages(ctx context.Context, count int) ([]Message, error) {
 	result := make([]Message, 0)
-	err := d.store.Find(&result, bolthold.Where(bolthold.Key).Ge(0).SortBy("CreatedAt").Limit(count))
-	// d.conn.Order("CreatedAT DESC").Limit(count).Find(&result, new(Message))
+	err := d.store.Find(&result, bolthold.Where("Author").Ne("").SortBy("CreatedAt").Reverse().Limit(count))
 	return result, err
 }
 
 func (d *DB) GetMessagesSince(ctx context.Context, since time.Time, count int) ([]Message, error) {
 	result := make([]Message, 0)
-	err := d.store.Find(&result, bolthold.Where("CreatedAt").Lt(since).SortBy("CreatedAt").Limit(count))
+	err := d.store.Find(&result, bolthold.Where("CreatedAt").Lt(since).SortBy("CreatedAt").Reverse().Limit(count))
 	return result, err
 }
 

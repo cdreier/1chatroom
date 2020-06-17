@@ -75,14 +75,17 @@ func (c *Chat) RealtimeHandler(w http.ResponseWriter, r *http.Request) {
 				Author: user.Name,
 				Text:   msg.Text,
 			}
-			c.db.StoreMessage(r.Context(), &m)
-
-			c.broadcastMessage(r.Context(), broadcastMessage{
-				ID:     m.ID,
-				Author: m.Author,
-				Text:   m.Text,
-				Date:   m.CreatedAt,
-			})
+			err := c.db.StoreMessage(r.Context(), &m)
+			if err != nil {
+				log.Println("unable to save message", err.Error())
+			} else {
+				c.broadcastMessage(r.Context(), broadcastMessage{
+					ID:     m.ID,
+					Author: m.Author,
+					Text:   m.Text,
+					Date:   m.CreatedAt,
+				})
+			}
 
 			break
 		case msgTypeLoadMore:
