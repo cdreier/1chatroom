@@ -2,8 +2,9 @@
 
 exports[`ChatMessage it renders other messages 1`] = `
 .c0 {
-  border: 1px solid #eaeaea;
-  background-color: #fafafa;
+  border-bottom: 1px solid white;
+  border-left: 1px solid white;
+  background-color: rgba(87,186,255,0.7);
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 6px;
   padding: 15px;
@@ -37,7 +38,7 @@ exports[`ChatMessage it renders other messages 1`] = `
 
 .c4 {
   margin: 9px 0 0;
-  font-family: Playfair Display;
+  font-family: Merriweather;
   font-size: 1.2em;
   line-height: 1.65em;
   color: #333;
@@ -71,8 +72,9 @@ exports[`ChatMessage it renders other messages 1`] = `
 
 exports[`ChatMessage it renders own messages 1`] = `
 .c0 {
-  border: 1px solid #eaeaea;
-  background-color: #e8f9f2;
+  border-bottom: 1px solid white;
+  border-right: 1px solid white;
+  background-color: rgba(23,130,255,0.7);
   -webkit-align-self: flex-end;
   -ms-flex-item-align: end;
   align-self: flex-end;
@@ -109,7 +111,7 @@ exports[`ChatMessage it renders own messages 1`] = `
 
 .c4 {
   margin: 9px 0 0;
-  font-family: Playfair Display;
+  font-family: Merriweather;
   font-size: 1.2em;
   line-height: 1.65em;
   color: #333;
