@@ -17,8 +17,11 @@ const Container = styled.div`
 const MessageContainer = styled.div`
   flex: 1;
   padding: 0 12px;
-  overflow: auto;
   margin-bottom: 6px;
+  overflow: none;
+  @media ${props => props.theme.util.breakpoint} {
+    overflow: auto;
+  }
 `
 
 const Scrollable = styled.div`

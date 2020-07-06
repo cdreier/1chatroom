@@ -7,7 +7,8 @@ interface ContainerProps {
 }
 
 const Container = styled.div<ContainerProps>`
-  border: 1px solid ${props => props.theme.colors.borders};
+  border-bottom: 1px solid white;
+  ${props => props.ownMessage ? 'border-right ' : 'border-left'}: 1px solid white;
   background-color: ${props => props.ownMessage ? props.theme.colors.ownMessage : props.theme.colors.otherMessage};
   ${props => props.ownMessage ? 'align-self: flex-end;' : ''};
   border-bottom-left-radius: ${props => props.ownMessage ? '6px' : '0px'};

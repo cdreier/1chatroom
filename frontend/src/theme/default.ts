@@ -8,9 +8,6 @@ declare module 'styled-components' {
       lineHeightBig: string,
     },
     colors: {
-      background: string,
-      background2: string,
-      background3: string,
       black: string,
       borders: string,
       secondary: string,
@@ -25,21 +22,18 @@ declare module 'styled-components' {
 
 const Theme = {
   fonts: {
-    primary: 'Playfair Display',
+    primary: 'Merriweather',
     secondary: 'Roboto',
     normal: '1em',
     big: '1.2em',
     lineHeightBig: '1.65em',
   },
   colors: {
-    background: '#f1f1f1',
-    background2: '#dfdfdf',
-    background3: '#eaeaea',
     black: '#333',
     borders: '#eaeaea',
     secondary:'rgba(250,157,38, 0.0)',
-    ownMessage: '#e8f9f2',
-    otherMessage: '#fafafa',
+    ownMessage: 'rgba(23, 130, 255, 0.7)',
+    otherMessage: 'rgba(87, 186, 255, 0.7)',
   },
   util: {
     breakpoint: '(min-width: 768px)',
